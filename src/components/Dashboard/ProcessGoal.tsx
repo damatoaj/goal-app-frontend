@@ -26,12 +26,12 @@ const ProcessGoal: React.FC <pgProps> = (props) => {
     const handleUpdate = async (e:FormEvent, id:string, act:string, setA:Function, setO:Function) => {
         e.preventDefault();
         try {
-            const req :any = await axios.put(`http://localhost:3000/processes/${id}`, {
+            const req :any = await axios.put(`${process.env.REACT_APP_URL}/processes/${id}`, {
                 duration: duration,
                 frequency: frequency,
                 repeats:repeats
             })
-            const res :any = await axios.get(`http://localhost:3000/outcomes`);
+            const res :any = await axios.get(`${process.env.REACT_APP_URL}/outcomes`);
             const data : Outcome [] = await res.data;
             if(data) {
                 let a : Outcome | undefined = data.find(d => d._id === act);
@@ -46,8 +46,8 @@ const ProcessGoal: React.FC <pgProps> = (props) => {
     const handleDelete = async (e:FormEvent, id:string, act:string, setA:Function, setO:Function) => {
         e.preventDefault();
         try {
-            const req : any = await axios.delete(`http://localhost:3000/processes/${id}`);
-            const res : any = await axios.get(`http://localhost:3000/outcomes`);
+            const req : any = await axios.delete(`${process.env.REACT_APP_URL}/processes/${id}`);
+            const res : any = await axios.get(`${process.env.REACT_APP_URL}/outcomes`);
             const data : Outcome[]=  res.data;
             console.log(req, res, data, 'please work')
             let a : Outcome | undefined = data.find(d => d._id === act);

@@ -24,7 +24,7 @@ const ProcessForm: React.FC <pfProps> = (props) => {
     const handleSubmit= async(e:FormEvent, oid:String, pid:string, aid:string, setO:Function, setA:Function, setT:Function) => {
         e.preventDefault();
         try{
-            const req : any = await axios.post(`http://localhost:3000/outcomes/${oid}/performances/${pid}/processes`, {
+            const req : any = await axios.post(`${process.env.REACT_APP_URL}/outcomes/${oid}/performances/${pid}/processes`, {
                 action:action,
                 duration: {
                     number: duration,
@@ -36,7 +36,7 @@ const ProcessForm: React.FC <pfProps> = (props) => {
                 },
                 repeats:repeats,
             });
-            const res : any = await axios.get(`http://localhost:3000/outcomes/`)
+            const res : any = await axios.get(`${process.env.REACT_APP_URL}/outcomes/`)
             const data : Outcome [] = res.data;
             if (data) {
                 let a = data.find(d => d._id === aid);

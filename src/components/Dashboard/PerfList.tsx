@@ -33,14 +33,14 @@ console.log(props, 'perf list')
     const updatePerformance = async (e:FormEvent, id:string, setO:Function, setA:Function) => {
         e.preventDefault();
         try {
-            const req : any = await axios.put(`http://localhost:3000/performances/${id}`, {
+            const req : any = await axios.put(`${process.env.REACT_APP_URL}/performances/${id}`, {
                 dateDue: new Date(dateDue),
                 completed: completed,
                 reward: reward,
                 punishment: punishment,
                 percentImproved: percentImproved
             });
-            const res : any = await axios.get(`http://localhost:3000/outcomes`);
+            const res : any = await axios.get(`${process.env.REACT_APP_URL}/outcomes`);
             const data : Outcome[] = await res.data;
             if (data) {
                 let a : Outcome | undefined = data.find(d => d._id === props.active._id);

@@ -16,7 +16,7 @@ const Dashboard: React.FC = () => {
 
     useEffect(()=> {
         (async ()=> {
-           const res : any =  await axios.get('http://localhost:3000/outcomes');
+           const res : any =  await axios.get(`${process.env.REACT_APP_URL}/outcomes`);
            const data : Outcome [] = await res.data;
            if (data) {
                 setOutcomes(data);
@@ -42,8 +42,8 @@ const Dashboard: React.FC = () => {
 
     const deleteOutcome = async (e:any) => {
         try {
-            const req : any = await axios.delete(`http://localhost:3000/outcomes/${e.target.name}`);
-            const res : any = await axios.get('http://localhost:3000/outcomes');
+            const req : any = await axios.delete(`${process.env.REACT_APP_URL}/outcomes/${e.target.name}`);
+            const res : any = await axios.get(`${process.env.REACT_APP_URL}/outcomes`);
             const data : Outcome [] = res.data;
             if(data) {
                 setOutcomes(data)
@@ -57,8 +57,8 @@ const Dashboard: React.FC = () => {
     const deletePerformance = async (e:FormEvent, id:string, setO:Function, setA:Function, aid:string) => {
         e.preventDefault();
         try {
-            const req = await axios.delete(`http://localhost:3000/performances/${id}`);
-            const res = await axios.get(`http://localhost:3000/outcomes`);
+            const req = await axios.delete(`${process.env.REACT_APP_URL}/performances/${id}`);
+            const res = await axios.get(`${process.env.REACT_APP_URL}/outcomes`);
             const data : Outcome[] = await res.data;
             if(data) {
                 let a : Outcome | undefined= data.find(d => d._id === aid)

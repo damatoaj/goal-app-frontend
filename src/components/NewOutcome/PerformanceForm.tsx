@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { request } from 'http';
 import React, {FormEvent, useRef} from 'react'
 import {Outcome} from '../../interfaces/outcomeGoals.model';
 
@@ -21,7 +20,7 @@ const PerformanceForm: React.FC <formProps> = (props) => {
         e.preventDefault();
 
         try {
-            const req = await axios.post(`http://localhost:3000/outcomes/${id}/performances`, {
+            const req = await axios.post(`${process.env.REACT_APP_URL}/outcomes/${id}/performances`, {
                 description: descInputRef.current!.value.trim(),
                 dueDate: dateDueInputRef.current!.value,
                 reward: rewardInputRef.current!.value.trim(),
@@ -33,7 +32,7 @@ const PerformanceForm: React.FC <formProps> = (props) => {
                 complete: false,
                 processGoals: []
             });
-            const res : any = await axios.get(`http://localhost:3000/outcomes/${id}`);
+            const res : any = await axios.get(`${process.env.REACT_APP_URL}/outcomes/${id}`);
             const data : Outcome = await res.data;
             if (data) props.setOc(data);
 

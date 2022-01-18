@@ -18,7 +18,7 @@ const OutcomeForm : React.FC <formProps> = (props) => {
         try {
 
             const res: any = await axios.post(
-                `http://localhost:3000/outcomes`,
+                `${process.env.REACT_APP_URL}/outcomes`,
                 {
                 description: descInputRef.current!.value.trim(),
                 dateDue: dateDueInputRef.current!.value,

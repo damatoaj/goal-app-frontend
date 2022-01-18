@@ -12,7 +12,7 @@ const NewOutcome: React.FC = () => {
 
     useEffect(()=> {
         (async ()=> {
-           const resp : any =  await axios.get('http://localhost:3000/outcomes');
+           const resp : any =  await axios.get(`${process.env.REACT_APP_URL}/outcomes`);
            const data : Outcome [] = await resp.data;
            setOutcomes(data);
         })()
