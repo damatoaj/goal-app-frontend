@@ -29,7 +29,7 @@ const NewOutcome: React.FC = () => {
     } else{
         return(
             <main>
-                <SelectOutcome outcomes={outcomes} setOc={setOc} text={'Select a different goal'} />
+                {outcomes.length > 0 ? <SelectOutcome outcomes={outcomes} setOc={setOc} text={'Select a different goal'} /> : <></>}
                 <h1>{oc.description}</h1>
                 <OutcomeForm setOc={setOc}  oc={oc}/>
                 {oc.performanceGoals.length > 0 ? <h2>Add more performance goals...</h2> : <h2>Add a Performance Goal</h2>}
