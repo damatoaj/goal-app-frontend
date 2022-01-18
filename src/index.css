@@ -1,0 +1,273 @@
+html {
+  font-family: 'Alegreya,', serif;
+}
+
+body {
+  margin: 0;
+  padding:0;
+  box-sizing: border-box;
+
+}
+:root {
+  --mar-pad-reg: .5rem;
+  --mar-pad-l: calc(var(--mar-pad-reg)*1.5);
+  --mar-pad-xl: calc(var(--mar-pad-reg)*2);
+  --mar-pad-s: calc(var(--mar-pad-reg)*.75);
+  --mar-pad-xs: calc(var(--mar-pad-reg)*.5);
+
+  --font-size-sm: 1vw;
+  --font-size-rg: calc(var(--font-size-sm) * 5);
+  --font-size-lg: calc(var(--font-size-sm) * 10);
+  --font-size-xl: calc(var(--font-size-sm) * 15);
+
+  --warning-clr: red;
+  --go-clr:green;
+  --fir-clr:violet;
+  --sec-clr: blue;
+
+  --trial-white: rgb(255,255,255,0);
+}
+
+ul {
+  list-style: none; 
+  padding:0;
+}
+
+#pgForm {
+  position: relative;
+  height:100%;
+  width:100%;
+  padding:var(--mar-pad-reg);
+  margin-top:var(--mar-pad-reg);
+  background-color: var(--sec-clr);
+}
+
+#landing {
+  text-align: center;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+}
+
+#dashboard {
+  height:90vh;
+  width:100vw;
+  flex-direction:column;
+  height:100vh;
+  display: inline-grid;
+  grid-template-columns: [first] 25% [second] 75%;
+}
+
+header {
+  display:flex; 
+  justify-content: space-between;
+  padding:var(--mar-pad-s);
+}
+
+form {
+  text-align: left;
+  padding: var(--mar-pad-reg);
+  margin: var(--mar-pad-xl);
+}
+
+fieldset {
+  padding:var(--mar-pad-xl);
+}
+
+#outcome-li {
+  width:100%;
+  text-overflow: wrap;
+}
+.delete-circle {
+  text-align: center;
+  border-radius: 50%;
+  border-width:0;
+  outline: 1px solid black;
+  font-style: var(--font-size-sm);
+  position: relative;
+  top: -2rem;
+  right: -5rem;
+  z-index: 1;
+  width: 1rem;
+  padding:var(--mar-pad-xs);
+  cursor: pointer;
+}
+
+.delete-circle:hover {
+  background-color: var(--warning-clr);
+}
+.activeBtn {
+  background-color: var(--fir-clr);
+  border-radius: 0% 50% 50% 0%;
+}
+main {
+  margin: var(--mar-pad-s);
+}
+#dash-header {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  margin-left: var(--mar-pad-xl);
+  padding:var(--mar-pad-reg);
+  border: 2px solid black;
+}
+
+.warning:hover {
+  background-color: var(--warning-clr);
+}
+
+.update:hover {
+  background-color: var(--go-clr);
+}
+
+
+#dash-col-2 {
+  display: flex;
+  flex-direction: column;
+}
+
+.perf-list {
+  z-index:1;
+  display: none;
+  background-color:var(--fir-clr);
+  position: absolute;
+  top: 4.8rem;
+  margin-left: .5rem;
+  width:100%;
+}
+
+.process-list {
+  z-index:2;
+  display: none;
+  background-color: var(--sec-clr);
+  position: absolute;
+  top:0rem;
+}
+
+a {
+  margin:var(--mar-pad-s);
+  color:black;
+  padding-top:var(--mar-pad-lg);
+}
+
+h1 {
+  font-size: var(--font-size-xl);
+  text-decoration: underline;
+}
+
+h2 {
+  font-size: var(--font-size-lg);
+  text-decoration: underline;
+}
+
+h3 {
+  font-size:var(--font-size-rg);
+  
+}
+
+p{ 
+  font-size:var(--font-size-rg);
+}
+
+nav{
+  display:flex;
+  flex-wrap: wrap;
+  align-content: center;
+}
+
+li > button {
+  width:100%;
+}
+
+input {
+  border:2px solid black;
+}
+
+  @media only screen and (min-width: 750px) {
+    :root {
+      --font-size-sm:.4vw;
+    }
+    button {
+      font-size: var(--font-size-rg);
+    }
+    legend {
+      font-size: var(--font-size-lg);
+    }
+    input[type=checkbox] {
+      width: 2rem;
+      height:2rem;
+    
+    }
+    .perf-list {
+      top: 7.5rem;
+      margin-left: 1rem;
+    }
+
+    .landing-btn {
+      margin:var(--mar-pad-xl);
+      padding:var(--mar-pad-reg);
+      font-size: var(--font-size-rg);
+    }
+
+    label {
+      font-size: var(--font-size-rg);
+      margin-right:var(--mar-pad-reg);
+    }
+    input{
+      font-size: var(--font-size-rg);
+      padding-left: var(--mar-pad-xl);
+    }
+
+    a {
+      font-size: var(--font-size-rg);
+    }
+
+    select {
+      font-size: var(--font-size-rg);
+      padding:var(--mar-pad-s);
+      margin-left: var(--mar-pad-lg);
+    }
+
+    #outcome-li > button {
+      font-size: var(--font-size-rg);
+    }
+
+    .delete-circle {
+      left: 10.3rem;
+      top: -5rem;
+      padding:var(--mar-pad-lg);
+      width:20%;
+    }
+    input {
+      margin-top: var(--mar-pad-reg);
+      margin-bottom: var(--mar-pad-reg);
+    }
+  }
+
+
+  @media only screen and (min-width: 700px) {
+    .delete-circle {
+      left: 11rem;
+      top: -2rem;
+      width:14%;
+    }
+  }
+
+  @media only screen and (min-width: 1000px) {
+    .delete-circle {
+      left: 13rem;
+      top: -2.5rem;
+    }
+  }
+
+  @media only screen and (min-width:1300px) {
+    :root{
+      --font-size-sm: .3vw;
+    }
+
+    .delete-circle {
+      left: 20rem;
+      top:-3rem;
+      width:12%;
+    }
+  }

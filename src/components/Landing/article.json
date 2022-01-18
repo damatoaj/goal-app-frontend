@@ -1,0 +1,30 @@
+[
+    {
+        "id":0,
+        "title":"Welcome to Golz",
+        "p1":"Golz is a small app designed to help users create SMART goals that are specific, measurable, attainable, relevant, and time-bound.",
+        "p2":"The goals that users make are made up of outcome goals, that are in turn made of performance and process goals.",
+        "p3":"This app uses MongoDB via Mongoose, Express, Node, and React with Typescript to allow users to create, read, update, and delete their goals."
+    },
+    {
+        "id":1,
+        "title":"Outcome Goals",
+        "p1":"These types of goals are the most out of our control, and even if they are SMART our best efforts might not achieve them.",
+        "p2":"Examples might include winning a baseball game, or being the best car salesperson in your company. Even if one does everything correct, the outcomes are not guaranteed.",
+        "p3":"Therefore, just making outcome goals that are SMART is not enough, you should also make..."
+    },
+    {
+        "id":2,
+        "title":"Performance Goals",
+        "p1":"These goals, if achieved, are surely going to help you achieve your outcome goals. They must focus on a measurable component.",
+        "p2":"If you want to win your baseball game, then increasing your batting average by 30% would surely help or increasing your sprint speed by half a mile per hour.",
+        "p3":"These goals have an end date that they are achieved by but the daily goals that make them attainable are..."
+    },
+    {
+        "id":3,
+        "title":"Process Goals",
+        "p1":"These are the daily or weekly goals that guarantee performance goals, maybe they repeat, maybe they don't.",
+        "p2":"To increase your batting average, your process goal might be to go to the batting cage three times per week for 60 minutes",
+        "p3":"These goals don't need an explicit end date but accomplishing these little goals every week you can make grander visions happen."
+    }
+]
