@@ -20,7 +20,7 @@ const PerformanceForm: React.FC <formProps> = (props) => {
         e.preventDefault();
 
         try {
-            const req = await axios.post(`${process.env.REACT_APP_URL}/outcomes/${id}/performances`, {
+            await axios.post(`${process.env.REACT_APP_URL}/outcomes/${id}/performances`, {
                 description: descInputRef.current!.value.trim(),
                 dueDate: dateDueInputRef.current!.value,
                 reward: rewardInputRef.current!.value.trim(),
@@ -36,7 +36,7 @@ const PerformanceForm: React.FC <formProps> = (props) => {
             const data : Outcome = await res.data;
             if (data) props.setOc(data);
 
-            console.log(req, 'the request')
+          
 
             descInputRef.current!.value = '';
             dateDueInputRef.current!.value = '';

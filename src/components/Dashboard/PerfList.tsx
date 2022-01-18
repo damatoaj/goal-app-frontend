@@ -1,4 +1,4 @@
-import React, {useState, FormEvent, MouseEvent, useEffect} from 'react';
+import React, {useState, FormEvent, MouseEvent} from 'react';
 import axios from 'axios';
 import {Performance} from '../../interfaces/performanceGoals.model';
 import {Outcome} from '../../interfaces/outcomeGoals.model';
@@ -33,7 +33,7 @@ console.log(props, 'perf list')
     const updatePerformance = async (e:FormEvent, id:string, setO:Function, setA:Function) => {
         e.preventDefault();
         try {
-            const req : any = await axios.put(`${process.env.REACT_APP_URL}/performances/${id}`, {
+                await axios.put(`${process.env.REACT_APP_URL}/performances/${id}`, {
                 dateDue: new Date(dateDue),
                 completed: completed,
                 reward: reward,

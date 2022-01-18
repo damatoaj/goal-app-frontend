@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, {useRef, FormEvent, useState} from 'react';
+import React, { FormEvent, useState} from 'react';
 import {Process} from '../../interfaces/processGoals.models';
 import {Outcome} from '../../interfaces/outcomeGoals.model';
 
@@ -26,7 +26,7 @@ const ProcessGoal: React.FC <pgProps> = (props) => {
     const handleUpdate = async (e:FormEvent, id:string, act:string, setA:Function, setO:Function) => {
         e.preventDefault();
         try {
-            const req :any = await axios.put(`${process.env.REACT_APP_URL}/processes/${id}`, {
+            await axios.put(`${process.env.REACT_APP_URL}/processes/${id}`, {
                 duration: duration,
                 frequency: frequency,
                 repeats:repeats
@@ -46,10 +46,10 @@ const ProcessGoal: React.FC <pgProps> = (props) => {
     const handleDelete = async (e:FormEvent, id:string, act:string, setA:Function, setO:Function) => {
         e.preventDefault();
         try {
-            const req : any = await axios.delete(`${process.env.REACT_APP_URL}/processes/${id}`);
+            await axios.delete(`${process.env.REACT_APP_URL}/processes/${id}`);
             const res : any = await axios.get(`${process.env.REACT_APP_URL}/outcomes`);
             const data : Outcome[]=  res.data;
-            console.log(req, res, data, 'please work')
+            console.log(res, data, 'please work')
             let a : Outcome | undefined = data.find(d => d._id === act);
             setO(data);
             if(a) setA(a);

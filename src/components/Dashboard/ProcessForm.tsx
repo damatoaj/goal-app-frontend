@@ -24,7 +24,7 @@ const ProcessForm: React.FC <pfProps> = (props) => {
     const handleSubmit= async(e:FormEvent, oid:String, pid:string, aid:string, setO:Function, setA:Function, setT:Function) => {
         e.preventDefault();
         try{
-            const req : any = await axios.post(`${process.env.REACT_APP_URL}/outcomes/${oid}/performances/${pid}/processes`, {
+            await axios.post(`${process.env.REACT_APP_URL}/outcomes/${oid}/performances/${pid}/processes`, {
                 action:action,
                 duration: {
                     number: duration,
