@@ -24,8 +24,8 @@ const SelectOutcome: React.FC <outcomesProps> = (props) => {
     return (
         <span>
             <h2>{props.text}</h2>
-            <select onChange={(e)=> handleSelect(e.target.options.selectedIndex, props.outcomes, props.setOc)} name='oc'>
-                <option value='' selected disabled hidden>Select</option>
+            <select defaultValue='' onChange={(e)=> handleSelect(e.target.options.selectedIndex, props.outcomes, props.setOc)} name='oc'>
+                <option value='' disabled hidden>Select</option>
                 {options}
             </select>
             { props.text !== 'Or edit a current goal' ?
