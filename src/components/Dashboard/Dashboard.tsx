@@ -22,8 +22,6 @@ const Dashboard: React.FC = () => {
                 setOutcomes(data);
                 setActive(data[0]);
            };
-           
-           if(data.length < 1) return <Navigate to='/newOutcome' />
         })()
     }, []);
 
@@ -74,6 +72,7 @@ const Dashboard: React.FC = () => {
 
     return (
         <main id="dashboard">
+            {outcomes.length < 1 && <Navigate to='/newOutcome' replace={true}/>}
             <div id="dash-col-1">
             <h3>Outcome Goals</h3>
             <ul>

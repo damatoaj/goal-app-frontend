@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {Outlet} from 'react-router-dom';
 
 import { User } from './interfaces/user.model'
 
@@ -32,6 +33,7 @@ const App: React.FC = () => {
     return(
       <>
         <Header user={user} logoutHandler={logoutHandler} />
+        <Outlet />
       </>
     )
   }

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { FormEvent, useRef } from 'react';
 import setAuthToken from '../../utils/setAuthToken';
-import { User } from '../../interfaces/user.model'
+import { User } from '../../interfaces/user.model';
 
 type signupProps = {
     handleAuth: ( user:User ) => void;
