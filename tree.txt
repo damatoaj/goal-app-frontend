@@ -1,0 +1,43 @@
+├── package-lock.json
+├── package.json
+├── public
+│   └── index.html
+├── src
+│   ├── App.tsx
+│   ├── components
+│   │   ├── Auth
+│   │   │   ├── Login.tsx
+│   │   │   └── Signup.tsx
+│   │   ├── Dashboard
+│   │   │   ├── Dashboard.tsx
+│   │   │   ├── Display.tsx
+│   │   │   ├── OutcomeLi.tsx
+│   │   │   ├── PerfList.tsx
+│   │   │   ├── Performance.tsx
+│   │   │   ├── ProcessForm.tsx
+│   │   │   ├── ProcessGoal.tsx
+│   │   │   └── ProcessList.tsx
+│   │   ├── Header
+│   │   │   ├── AuthHeader.tsx
+│   │   │   └── Header.tsx
+│   │   ├── Landing
+│   │   │   ├── Info.tsx
+│   │   │   ├── Landing.tsx
+│   │   │   └── article.json
+│   │   └── NewOutcome
+│   │       ├── NewOutcome.tsx
+│   │       ├── OutcomeForm.tsx
+│   │       ├── PerformanceForm.tsx
+│   │       └── SelectOutcome.tsx
+│   ├── index.css
+│   ├── index.tsx
+│   ├── interfaces
+│   │   ├── article.model.ts
+│   │   ├── outcomeGoals.model.ts
+│   │   ├── performanceGoals.model.ts
+│   │   ├── processGoals.models.ts
+│   │   └── user.model.ts
+│   └── utils
+│       └── setAuthToken.ts
+├── tree.txt
+└── tsconfig.json
