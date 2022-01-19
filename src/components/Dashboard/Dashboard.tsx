@@ -11,6 +11,7 @@ const Dashboard: React.FC = () => {
     const [outcomes, setOutcomes] = useState<Outcome[]>([]);
     const [active, setActive] = useState<Outcome>(outcomes[0]);
     const [hidden, setHidden] = useState<Boolean>(false);
+    const [redirect, setRedirect] = useState<Boolean>(false);
 
     const perfList = useRef<HTMLLIElement>(null);
 
@@ -18,9 +19,11 @@ const Dashboard: React.FC = () => {
         (async ()=> {
            const res : any =  await axios.get(`${process.env.REACT_APP_URL}/outcomes`);
            const data : Outcome [] = await res.data;
-           if (data) {
+           if (data.length > 0) {
                 setOutcomes(data);
                 setActive(data[0]);
+           } else {
+            setRedirect(true);
            };
         })()
     }, []);
@@ -72,7 +75,7 @@ const Dashboard: React.FC = () => {
 
     return (
         <main id="dashboard">
-            {outcomes.length < 1 && <Navigate to='/newOutcome' replace={true}/>}
+            {redirect && <Navigate to='/newOutcome' replace={true}/>}
             <div id="dash-col-1">
             <h3>Outcome Goals</h3>
             <ul>
