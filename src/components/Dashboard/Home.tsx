@@ -17,12 +17,11 @@ const Dashboard: React.FC  = () => {
     const [hidden, setHidden] = useState<Boolean>(false);
     const [redirect, setRedirect] = useState<Boolean>(false);
     const user = useUser();
-
     const perfList = useRef<HTMLLIElement>(null);
 
     useEffect(()=> {
         (async ()=> {
-           const res : any =  await axios.get(`${process.env.REACT_APP_URL}/outcomes/${user}`);
+           const res : any =  await axios.get(`${process.env.REACT_APP_URL}/outcomes?id=${user}`);
            const data : Outcome [] = await res.data;
            if (data.length > 0) {
                 setOutcomes(data);

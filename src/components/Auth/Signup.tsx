@@ -19,6 +19,7 @@ const Signup:React.FC<signupProps> = (props) => {
         const enteredPassword = passwordInputRef.current!.value.trim();
         try {
             const resp = await axios.post(`${process.env.REACT_APP_URL}/signup`, {name:enteredUserName, email:enteredEmail, password:enteredPassword});
+            console.log(resp, 'signup response')
             localStorage.setItem('jwtToken', resp.data.token);
             setAuthToken(resp.data.token)
             props.handleAuth(resp.data.user);

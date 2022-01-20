@@ -15,9 +15,7 @@ const SelectOutcome: React.FC <outcomesProps> = (props) => {
     });
 
     const handleSelect = (idx:number, outcomes:Outcome[], setO:Function) => {
-        console.log(idx, outcomes, setO)
         let arr = outcomes.filter(outcome => outcomes.indexOf(outcome) +1 === idx);
-        console.log(arr)
         setO(arr[0]);
     };
 

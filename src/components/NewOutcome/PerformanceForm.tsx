@@ -14,11 +14,9 @@ const PerformanceForm: React.FC <formProps> = (props) => {
     const punishmentInputRef = useRef<HTMLInputElement>(null);
     const percentInputRef = useRef<HTMLInputElement>(null);
     const selectRef = useRef<HTMLSelectElement>(null);
-    console.log(selectRef.current?.value, 'select ref')
     
     const addPerf = async (e:FormEvent, id:string) => {
         e.preventDefault();
-
         try {
             await axios.post(`${process.env.REACT_APP_URL}/outcomes/${id}/performances`, {
                 description: descInputRef.current!.value.trim(),
@@ -36,8 +34,6 @@ const PerformanceForm: React.FC <formProps> = (props) => {
             const data : Outcome = await res.data;
             if (data) props.setOc(data);
 
-          
-
             descInputRef.current!.value = '';
             dateDueInputRef.current!.value = '';
             rewardInputRef.current!.value = '';
@@ -45,9 +41,8 @@ const PerformanceForm: React.FC <formProps> = (props) => {
             percentInputRef.current!.value = '';
         } catch (err) {
             console.log(err);
-            alert('No fields can be blank');
         }
-    }
+    };
 
     return (
         <form onSubmit={(e)=> addPerf(e, props.id)}>

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { FormEvent, useRef } from 'react';
 import { Outcome } from '../../interfaces/outcomeGoals.model';
+import { useUser } from '../../App';
 
 type formProps = {
     setOc : (arg:Outcome)=> void;
@@ -12,7 +13,8 @@ const OutcomeForm : React.FC <formProps> = (props) => {
     const dateDueInputRef = useRef<HTMLInputElement>(null);
     const rewardInputRef = useRef<HTMLInputElement>(null);
     const punishmentInputRef = useRef<HTMLInputElement>(null);
-
+    const user = useUser();
+    
     const handleForm = async (e:FormEvent) => {
         e.preventDefault();
         try {
@@ -25,13 +27,14 @@ const OutcomeForm : React.FC <formProps> = (props) => {
                 reward: rewardInputRef.current!.value.trim(),
                 punishment: punishmentInputRef.current!.value.trim(),
                 complete: false,
-                performanceGoals: []
+                performanceGoals: [],
+                userId:user
             })
             const newOutcome: Outcome = await res.data;
             if(newOutcome) props.setOc(newOutcome);
+            console.log(newOutcome, 'the new outcome')
         } catch (err) {
             console.log(err);
-            alert('No fields can be blank');
         }
     };
     
