@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import {Outlet} from 'react-router-dom';
+import {Outlet, useOutletContext} from 'react-router-dom';
 
 import { User } from './interfaces/user.model'
 
 import Landing from './components/Landing/Landing';
 import Header from './components/Header/Header';
+
+type ContextType={ user: String}
 
 const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -33,7 +35,7 @@ const App: React.FC = () => {
     return(
       <>
         <Header user={user} logoutHandler={logoutHandler} />
-        <Outlet />
+        <Outlet context={user._id}/>
       </>
     )
   }
@@ -41,3 +43,7 @@ const App: React.FC = () => {
 }
 
 export default App;
+
+export function useUser() {
+  return useOutletContext<ContextType>();
+}
