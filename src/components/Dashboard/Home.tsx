@@ -21,7 +21,10 @@ const Dashboard: React.FC  = () => {
 
     useEffect(()=> {
         (async ()=> {
-           const res : any =  await axios.get(`${process.env.REACT_APP_URL}/outcomes?id=${user}`);
+           const controller : AbortController = new AbortController();
+           const res : any =  await axios.get(`${process.env.REACT_APP_URL}/outcomes?id=${user}`, {
+            signal : controller.signal
+           });
            const data : Outcome [] = await res.data;
            if (data.length > 0) {
                 setOutcomes(data);
@@ -29,6 +32,7 @@ const Dashboard: React.FC  = () => {
            } else {
             setRedirect(true);
            };
+           return () => controller.abort();
         })()
     }, [user]);
 

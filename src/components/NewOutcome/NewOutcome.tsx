@@ -14,9 +14,14 @@ const NewOutcome: React.FC = () => {
 
     useEffect(()=> {
         (async ()=> {
-           const resp : any =  await axios.get(`${process.env.REACT_APP_URL}/outcomes?id=${user}`);
+            const controller : AbortController = new AbortController();
+           const resp : any =  await axios.get(`${process.env.REACT_APP_URL}/outcomes?id=${user}`, {
+            signal : controller.signal
+           });
            const data : Outcome [] = await resp.data;
            setOutcomes(data);
+
+           return () => controller.abort();
         })()
     }, [user]);
 
