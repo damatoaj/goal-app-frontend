@@ -1,12 +1,15 @@
 import axios from 'axios';
-import React, { FormEvent, useRef } from 'react';
+import React, { FormEvent, useRef, useState } from 'react';
 import { Outcome } from '../../interfaces/outcomeGoals.model';
 import { useUser } from '../../App';
+import { validateDate } from '../../utils/validateDate';
+import { minimumStringLength } from '../../utils/minimumStringLength';
 
 type formProps = {
     setOc : (arg:Outcome)=> void;
     oc: Outcome | null;
 };
+
 
 const OutcomeForm : React.FC <formProps> = (props) => {
     const descInputRef = useRef<HTMLInputElement>(null);
@@ -14,10 +17,20 @@ const OutcomeForm : React.FC <formProps> = (props) => {
     const rewardInputRef = useRef<HTMLInputElement>(null);
     const punishmentInputRef = useRef<HTMLInputElement>(null);
     const user = useUser();
+    const [error, setError] = useState<String | null>(null);
+    const [isLoading, setIsLoading] = useState<Boolean>(false);
+     
     
     const handleForm = async (e:FormEvent) => {
         e.preventDefault();
+        setError(null);
+        setIsLoading(true);
+
         try {
+            if(!validateDate(new Date(dateDueInputRef.current!.value))) throw new Error("Goals must be set in the future");
+            if(!minimumStringLength(descInputRef.current!.value)) throw new Error('The description should have more detail');
+            if(!minimumStringLength(rewardInputRef.current!.value)) throw new Error('The reward should have more detail')
+            if(!minimumStringLength(punishmentInputRef.current!.value)) throw new Error('The punishment should have more detail')
 
             const res: any = await axios.post(
                 `${process.env.REACT_APP_URL}/outcomes`,
@@ -32,11 +45,18 @@ const OutcomeForm : React.FC <formProps> = (props) => {
             })
             const newOutcome: Outcome = await res.data;
             if(newOutcome) props.setOc(newOutcome);
-            console.log(newOutcome, 'the new outcome')
-        } catch (err) {
-            console.log(err);
+            setIsLoading(false);
+            setError(null);
+        } catch (err : any) {
+            setError(err.message);
+            setIsLoading(false);
         }
     };
+
+
+    if(isLoading) {
+        <h1>Loading...</h1>
+    }
     
     return (
         <form onSubmit={handleForm}>
@@ -89,6 +109,7 @@ const OutcomeForm : React.FC <formProps> = (props) => {
             <br></br>
             <br></br>
             <button type="submit" className="landing-btn">Submit</button>
+            {error && <p>{error}</p>}
             </fieldset>
         </form>
     )

@@ -1,6 +1,6 @@
 import axios from 'axios';
-import React, {FormEvent, useRef} from 'react'
-import {Outcome} from '../../interfaces/outcomeGoals.model';
+import React, { FormEvent, useRef, useState } from 'react'
+import { Outcome } from '../../interfaces/outcomeGoals.model';
 
 type formProps = {
     id: string;
@@ -14,9 +14,13 @@ const PerformanceForm: React.FC <formProps> = (props) => {
     const punishmentInputRef = useRef<HTMLInputElement>(null);
     const percentInputRef = useRef<HTMLInputElement>(null);
     const selectRef = useRef<HTMLSelectElement>(null);
+    const [error, setError] = useState<String | null>(null);
+    const [isLoading, setIsLoading] = useState<Boolean>(false);
     
     const addPerf = async (e:FormEvent, id:string) => {
         e.preventDefault();
+        setIsLoading(true);
+        setError(null);
         try {
             await axios.post(`${process.env.REACT_APP_URL}/outcomes/${id}/performances`, {
                 description: descInputRef.current!.value.trim(),
@@ -32,6 +36,7 @@ const PerformanceForm: React.FC <formProps> = (props) => {
             });
             const res : any = await axios.get(`${process.env.REACT_APP_URL}/outcomes/${id}`);
             const data : Outcome = await res.data;
+           
             if (data) props.setOc(data);
 
             descInputRef.current!.value = '';
@@ -39,10 +44,18 @@ const PerformanceForm: React.FC <formProps> = (props) => {
             rewardInputRef.current!.value = '';
             punishmentInputRef.current!.value = '';
             percentInputRef.current!.value = '';
-        } catch (err) {
+            setError(null);
+            setIsLoading(false);
+        } catch (err: any) {
             console.log(err);
+            setError(err.message);
+            setIsLoading(false);
         }
     };
+
+    if (isLoading) {
+        <h1>Loading...</h1>
+    }
 
     return (
         <form onSubmit={(e)=> addPerf(e, props.id)}>
@@ -108,6 +121,7 @@ const PerformanceForm: React.FC <formProps> = (props) => {
                 <br></br>
                 <br></br>
                 <button type="submit" className="landing-btn">Add</button>
+                {error && <p>{error}</p>}
             </fieldset>
         </form>
     )
