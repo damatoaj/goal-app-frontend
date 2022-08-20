@@ -20,10 +20,18 @@ const ProcessForm: React.FC <pfProps> = (props) => {
     const [repeats, setRepeats] = useState<Boolean>(false);
     const [fUnit, setFUnit] = useState<String>('DAILEY');
     const [dUnit, setDUnit] = useState<String>('MIN');
+    const [isLoading, setIsLoading] = useState<Boolean>(false);
+    const [error, setError] = useState<String | null>(null);
 
     const handleSubmit= async(e:FormEvent, oid:String, pid:string, aid:string, setO:Function, setA:Function, setT:Function) => {
         e.preventDefault();
+        setIsLoading(true);
+        setError(null);
         try{
+            if (action.length < 10) throw new Error('Describe the action in more detail');
+            if (duration <= 0) throw new Error('Duration is required and must be a positive number');
+            if (frequency <= 0) throw new Error('The goal has to happen at least once');
+
             await axios.post(`${process.env.REACT_APP_URL}/outcomes/${oid}/performances/${pid}/processes`, {
                 action:action,
                 duration: {
@@ -42,14 +50,19 @@ const ProcessForm: React.FC <pfProps> = (props) => {
                 let a = data.find(d => d._id === aid);
                 setO(data);
                 if(a) setA(a);
-                console.log(props.active, a, '<----check a and active')
+
                 setT(false);
             }
-        } catch(err) {
-            alert('No fields can be blank');
-            console.log(err)
+            setIsLoading(false);
+            setError(null);
+        } catch(err : any) {
+            console.error(err);
+            setIsLoading(false);
+            setError(err.message);
         }
     };
+
+
 
     return (
         <fieldset id="pgForm">
@@ -63,6 +76,7 @@ const ProcessForm: React.FC <pfProps> = (props) => {
                     type="string" 
                     name="action" 
                     onChange={(e)=>setAction(e.target.value)}
+                    required
                 />
                 <br></br>
                 <br></br>
@@ -74,6 +88,7 @@ const ProcessForm: React.FC <pfProps> = (props) => {
                     type="number" 
                     name="duration" 
                     onChange={(e)=>setDuration(e.target.valueAsNumber)}
+                    required
                 />
                 <select onChange={(e)=>setDUnit(e.target.value)}>
                     <option value="MIN">Mins</option>
@@ -89,6 +104,7 @@ const ProcessForm: React.FC <pfProps> = (props) => {
                     type="number" 
                     name="frequency" 
                     onChange={(e)=>setFrequency(e.target.valueAsNumber)}
+                    required
                 />
                 <select name="freqUnit" onChange={(e)=>setFUnit(e.target.value)}>
                     <option value="DAILEY">Per Day</option>
@@ -125,6 +141,8 @@ const ProcessForm: React.FC <pfProps> = (props) => {
                 <button onClick={()=> props.setToggle(false)}>
                     X
                 </button>
+                {isLoading && <p>Loading...</p>}
+                {error && <p>{error}</p>}
             </form>
         </fieldset>
     )

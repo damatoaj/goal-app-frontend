@@ -49,7 +49,7 @@ const ProcessGoal: React.FC <pgProps> = (props) => {
             await axios.delete(`${process.env.REACT_APP_URL}/processes/${id}`);
             const res : any = await axios.get(`${process.env.REACT_APP_URL}/outcomes`);
             const data : Outcome[]=  res.data;
-            console.log(res, data, 'please work')
+
             let a : Outcome | undefined = data.find(d => d._id === act);
             setO(data);
             if(a) setA(a);
