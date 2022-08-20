@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { FormEvent, useRef, useState } from 'react'
 import { Outcome } from '../../interfaces/outcomeGoals.model';
+import { validateDate } from '../../utils/validateDate';
+import { minimumStringLength } from '../../utils/minimumStringLength';
 
 type formProps = {
     id: string;
@@ -22,6 +24,10 @@ const PerformanceForm: React.FC <formProps> = (props) => {
         setIsLoading(true);
         setError(null);
         try {
+            if(!validateDate(new Date(dateDueInputRef.current!.value))) throw new Error('Date must be in the future');
+            if(!minimumStringLength(descInputRef.current!.value)) throw new Error('The goal needs more detail');
+            if(!minimumStringLength(rewardInputRef.current!.value)) throw new Error('The reward needs more detail');
+            if(!minimumStringLength(punishmentInputRef.current!.value)) throw new Error('The punishment needs more detail');
             await axios.post(`${process.env.REACT_APP_URL}/outcomes/${id}/performances`, {
                 description: descInputRef.current!.value.trim(),
                 dueDate: dateDueInputRef.current!.value,
@@ -47,7 +53,6 @@ const PerformanceForm: React.FC <formProps> = (props) => {
             setError(null);
             setIsLoading(false);
         } catch (err: any) {
-            console.log(err);
             setError(err.message);
             setIsLoading(false);
         }
@@ -67,7 +72,8 @@ const PerformanceForm: React.FC <formProps> = (props) => {
                 <input 
                     type="text" 
                     name="description" 
-                    ref={descInputRef} 
+                    ref={descInputRef}
+                    required
                 />
                 <br></br>
                 <br></br>
@@ -79,6 +85,7 @@ const PerformanceForm: React.FC <formProps> = (props) => {
                     type="date" 
                     name="dueDate" 
                     ref={dateDueInputRef}
+                    required
                 />
                 <br></br>
                 <br></br>
@@ -89,7 +96,8 @@ const PerformanceForm: React.FC <formProps> = (props) => {
                 <input 
                     type="number" 
                     name="improveNum" 
-                    ref={percentInputRef} 
+                    ref={percentInputRef}
+                    required
                 />
                 <select defaultValue="units" name="improveUnit" ref={selectRef}>
                     <option value="units">Units</option>
@@ -106,7 +114,8 @@ const PerformanceForm: React.FC <formProps> = (props) => {
                 <input 
                     type="text" 
                     name="reward" 
-                    ref={rewardInputRef} 
+                    ref={rewardInputRef}
+                    required
                 />
                 <br></br>
                 <label htmlFor="punishment">
@@ -116,7 +125,8 @@ const PerformanceForm: React.FC <formProps> = (props) => {
                 <input 
                     type="text" 
                     name="punishment" 
-                    ref={punishmentInputRef} 
+                    ref={punishmentInputRef}
+                    required
                 />
                 <br></br>
                 <br></br>

@@ -70,6 +70,7 @@ const OutcomeForm : React.FC <formProps> = (props) => {
                 name="description" 
                 ref={descInputRef} 
                 placeholder={props.oc?.description}
+                required
             />
             <br></br>
             <br></br>
@@ -80,7 +81,8 @@ const OutcomeForm : React.FC <formProps> = (props) => {
             <input 
                 type="date" 
                 name="dueDate" 
-                ref={dateDueInputRef} 
+                ref={dateDueInputRef}
+                required
             />
             <br></br>
             <br></br>
@@ -93,6 +95,7 @@ const OutcomeForm : React.FC <formProps> = (props) => {
                 name="reward" 
                 ref={rewardInputRef} 
                 placeholder={props.oc?.reward}
+                required
             />
             <br></br>
             <br></br>
@@ -105,6 +108,7 @@ const OutcomeForm : React.FC <formProps> = (props) => {
                 name="punishment" 
                 ref={punishmentInputRef} 
                 placeholder={props.oc?.punishment}
+                required
             />
             <br></br>
             <br></br>
