@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import OutcomeForm from './OutcomeForm';
 import {Outcome} from '../../interfaces/outcomeGoals.model';
-import { useUser } from '../../App';
+// import { useUser } from '../../App';
 
 import PerformanceForm from './PerformanceForm';
 import SelectOutcome from './SelectOutcome';
@@ -10,20 +10,20 @@ import SelectOutcome from './SelectOutcome';
 const NewOutcome: React.FC = () => {
     const [oc, setOc] = useState<Outcome | null>(null);
     const [outcomes, setOutcomes] = useState<Outcome[]>([]);
-    const user = useUser();
+    // const user = useUser();
 
-    useEffect(()=> {
-        (async ()=> {
-            const controller : AbortController = new AbortController();
-           const resp : any =  await axios.get(`${process.env.REACT_APP_URL}/outcomes?id=${user}`, {
-            signal : controller.signal
-           });
-           const data : Outcome [] = await resp.data;
-           setOutcomes(data);
+    // useEffect(()=> {
+    //     (async ()=> {
+    //         const controller : AbortController = new AbortController();
+    //        const resp : any =  await axios.get(`${process.env.REACT_APP_URL}/outcomes?id=${user}`, {
+    //         signal : controller.signal
+    //        });
+    //        const data : Outcome [] = await resp.data;
+    //        setOutcomes(data);
 
-           return () => controller.abort();
-        })()
-    }, [user]);
+    //        return () => controller.abort();
+    //     })()
+    // }, [user]);
 
     if (!oc) {
         return (

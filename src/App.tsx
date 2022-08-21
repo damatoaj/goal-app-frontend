@@ -1,49 +1,43 @@
 import React, { useState } from 'react';
-import {Outlet, useOutletContext} from 'react-router-dom';
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
 
 import { User } from './interfaces/user.model'
-
+import Home from './components/Dashboard/Home';
+import NewOutcome from './components/NewOutcome/NewOutcome';
 import Landing from './components/Landing/Landing';
 import Header from './components/Header/Header';
 
-type ContextType={ user: String}
+const App = () => {
+  return (
+    <BrowserRouter>
+      <Header user={null} logoutHandler={()=> console.log('logout')}/>
+      <Landing handleAuth={()=> console.log('handleauth')}/>
+    <Routes>
+      <Route path='/' >   
+        <Route index element={<Home />} />
+        <Route path=':id' element={<h1>id</h1>} />
+      </Route>
+      <Route path='/outcomes' >
+        <Route index element={<h1>outcomes list</h1>} />
+        <Route path="newOutcome" element={<NewOutcome/>} />
+        <Route path=':id' element={<h1>id</h1>} />
+      </Route>
+      <Route path='/performances'>
+        <Route index element={<h1>performance list</h1>} />
+        <Route path='newPerformance' element={<h1>performance form</h1>} />
+        <Route path=':id' element={<h1>id</h1>} />
+      </Route>
+      <Route path='/processes' >
+        <Route index element={<h1>process list</h1>} />
+        <Route path='newProcess' element={<h1>process form</h1>} />
+        <Route path=':id' element={<h1>id</h1>} />
+      </Route>
 
-const App: React.FC = () => {
-  const [user, setUser] = useState<User | null>(null);
-
-  const handleAuth = (user: User) => {
-    if(user) {
-      setUser(user);
-    } else {
-      setUser(null);
-      localStorage.removeItem('jwtToken')
-    };
-  };
-
-  const logoutHandler = () => {
-    setUser(null);
-  };
-
-  if (!user) {
-    return (
-      <>
-        <Header user={null} logoutHandler={logoutHandler} />
-        <Landing handleAuth={handleAuth}/>
-      </>
-    );
-  } else {
-    return(
-      <>
-        <Header user={user} logoutHandler={logoutHandler} />
-        <Outlet context={user._id}/>
-      </>
-    )
-  }
-
+    </Routes>
+  </BrowserRouter>
+  )
 }
 
 export default App;
 
-export function useUser() {
-  return useOutletContext<ContextType>();
-}
+

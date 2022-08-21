@@ -26,8 +26,8 @@ const Landing:React.FC <landingProps>= (props) => {
                 <Info content={text} handleNext={handleNext} handlePrev={handlePrev} />
                 <div>
                     <h2>Signup or Login</h2>
-                    <Signup handleAuth={props.handleAuth} />
-                    <Login handleAuth={props.handleAuth}/>
+                    <Signup />
+                    <Login handleAuth={()=>console.log('handleAuth')}/>
                 </div>
         </main>
     )

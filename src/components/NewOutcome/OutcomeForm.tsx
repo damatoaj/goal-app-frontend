@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { FormEvent, useRef, useState } from 'react';
 import { Outcome } from '../../interfaces/outcomeGoals.model';
-import { useUser } from '../../App';
+// import { useUser } from '../../App';
 import { validateDate } from '../../utils/validateDate';
 import { minimumStringLength } from '../../utils/minimumStringLength';
 
@@ -16,42 +16,42 @@ const OutcomeForm : React.FC <formProps> = (props) => {
     const dateDueInputRef = useRef<HTMLInputElement>(null);
     const rewardInputRef = useRef<HTMLInputElement>(null);
     const punishmentInputRef = useRef<HTMLInputElement>(null);
-    const user = useUser();
+    // const user = useUser();
     const [error, setError] = useState<String | null>(null);
     const [isLoading, setIsLoading] = useState<Boolean>(false);
      
     
-    const handleForm = async (e:FormEvent) => {
-        e.preventDefault();
-        setError(null);
-        setIsLoading(true);
+    // const handleForm = async (e:FormEvent) => {
+    //     e.preventDefault();
+    //     setError(null);
+    //     setIsLoading(true);
 
-        try {
-            if(!validateDate(new Date(dateDueInputRef.current!.value))) throw new Error("Goals must be set in the future");
-            if(!minimumStringLength(descInputRef.current!.value)) throw new Error('The description should have more detail');
-            if(!minimumStringLength(rewardInputRef.current!.value)) throw new Error('The reward should have more detail')
-            if(!minimumStringLength(punishmentInputRef.current!.value)) throw new Error('The punishment should have more detail')
+    //     try {
+    //         if(!validateDate(new Date(dateDueInputRef.current!.value))) throw new Error("Goals must be set in the future");
+    //         if(!minimumStringLength(descInputRef.current!.value)) throw new Error('The description should have more detail');
+    //         if(!minimumStringLength(rewardInputRef.current!.value)) throw new Error('The reward should have more detail')
+    //         if(!minimumStringLength(punishmentInputRef.current!.value)) throw new Error('The punishment should have more detail')
 
-            const res: any = await axios.post(
-                `${process.env.REACT_APP_URL}/outcomes`,
-                {
-                description: descInputRef.current!.value.trim(),
-                dateDue: dateDueInputRef.current!.value,
-                reward: rewardInputRef.current!.value.trim(),
-                punishment: punishmentInputRef.current!.value.trim(),
-                complete: false,
-                performanceGoals: [],
-                userId:user
-            })
-            const newOutcome: Outcome = await res.data;
-            if(newOutcome) props.setOc(newOutcome);
-            setIsLoading(false);
-            setError(null);
-        } catch (err : any) {
-            setError(err.message);
-            setIsLoading(false);
-        }
-    };
+    //         const res: any = await axios.post(
+    //             `${process.env.REACT_APP_URL}/outcomes`,
+    //             {
+    //             description: descInputRef.current!.value.trim(),
+    //             dateDue: dateDueInputRef.current!.value,
+    //             reward: rewardInputRef.current!.value.trim(),
+    //             punishment: punishmentInputRef.current!.value.trim(),
+    //             complete: false,
+    //             performanceGoals: [],
+    //             userId:user
+    //         })
+    //         const newOutcome: Outcome = await res.data;
+    //         if(newOutcome) props.setOc(newOutcome);
+    //         setIsLoading(false);
+    //         setError(null);
+    //     } catch (err : any) {
+    //         setError(err.message);
+    //         setIsLoading(false);
+    //     }
+    // };
 
 
     if(isLoading) {
@@ -59,7 +59,7 @@ const OutcomeForm : React.FC <formProps> = (props) => {
     }
     
     return (
-        <form onSubmit={handleForm}>
+        <form >
             <fieldset>
             <label>
                 What's the Goal?

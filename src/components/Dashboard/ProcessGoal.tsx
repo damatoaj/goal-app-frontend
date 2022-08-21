@@ -15,6 +15,14 @@ const ProcessGoal: React.FC <pgProps> = (props) => {
     const [duration, setDuration] = useState<number>(props.process.duration);
     const [frequency, setFrequency] = useState<number>(props.process.frequency);
     const [repeats, setRepeats] = useState<boolean>(props.process.repeats);
+    const [error, setError] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    const [form, setForm] = useState<object>({
+        duration : 0,
+        frequency: 0,
+        repeats: false
+    });
 
     // const fieldset = useRef<HTMLFieldSetElement>(null);
 
@@ -25,6 +33,8 @@ const ProcessGoal: React.FC <pgProps> = (props) => {
     // }
     const handleUpdate = async (e:FormEvent, id:string, act:string, setA:Function, setO:Function) => {
         e.preventDefault();
+        setIsLoading(true);
+        setError(null);
         try {
             await axios.put(`${process.env.REACT_APP_URL}/processes/${id}`, {
                 duration: duration,
@@ -38,13 +48,19 @@ const ProcessGoal: React.FC <pgProps> = (props) => {
                 setO(data);
                 if(a) setA(a);
             }
-        } catch (err) {
-            console.log(err);
+            setIsLoading(false);
+            setError(null);
+        } catch (err: any) {
+            console.error(err);
+            setError(err.message);
+            setIsLoading(false);
         }
     };
 
     const handleDelete = async (e:FormEvent, id:string, act:string, setA:Function, setO:Function) => {
         e.preventDefault();
+        setError(null);
+        setIsLoading(true);
         try {
             await axios.delete(`${process.env.REACT_APP_URL}/processes/${id}`);
             const res : any = await axios.get(`${process.env.REACT_APP_URL}/outcomes`);
@@ -53,8 +69,12 @@ const ProcessGoal: React.FC <pgProps> = (props) => {
             let a : Outcome | undefined = data.find(d => d._id === act);
             setO(data);
             if(a) setA(a);
-        } catch (err) {
-            console.log(err);
+            setIsLoading(false);
+            setError(null);
+        } catch (err: any) {
+            console.error(err);
+            setIsLoading(false);
+            setError(err.message);
         }
     };
 
@@ -70,6 +90,7 @@ const ProcessGoal: React.FC <pgProps> = (props) => {
                     name="duration" 
                     value={duration} 
                     onChange={(e)=>setDuration(e.target.valueAsNumber)}
+                    required
                 />
                 <br></br>
                 <label htmlFor="frequency">
@@ -80,6 +101,7 @@ const ProcessGoal: React.FC <pgProps> = (props) => {
                     name="frequency"
                     value={frequency} 
                     onChange={(e)=>setFrequency(e.target.valueAsNumber)}
+                    required
                 />
                 <br></br>
                 <label htmlFor="repeats">
@@ -116,6 +138,8 @@ const ProcessGoal: React.FC <pgProps> = (props) => {
                 >
                     X
                 </button>
+                {isLoading && <p>Loading...</p>}
+                {error && <p>{error}</p>}
             </form>
         </fieldset>
         )
