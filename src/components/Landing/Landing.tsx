@@ -7,11 +7,8 @@ import Signup from '../Auth/Signup';
 import Login from '../Auth/Login';
 import Info from './Info';
 
-type landingProps = {
-    handleAuth: (user:User)=> void;
-}
 
-const Landing:React.FC <landingProps>= (props) => {
+const Landing:React.FC = () => {
     const [text, setText] = useState<Article>(Content[0]);
     const handleNext = (e:MouseEvent) => {
         text.id+1 < Content.length ? setText(prevText=> Content[prevText.id+1]) : setText(Content[0]);
@@ -27,7 +24,7 @@ const Landing:React.FC <landingProps>= (props) => {
                 <div>
                     <h2>Signup or Login</h2>
                     <Signup />
-                    <Login handleAuth={()=>console.log('handleAuth')}/>
+                    <Login />
                 </div>
         </main>
     )

@@ -112,8 +112,13 @@ main {
   border: 2px solid black;
 }
 
-.warning:hover {
+button.go:hover {
+  background-color: var(--go-clr);
+  color: white;
+}
+button.warning:hover {
   background-color: var(--warning-clr);
+  color:white;
 }
 
 .update:hover {
@@ -150,6 +155,15 @@ a {
   padding-top:var(--mar-pad-lg);
 }
 
+.error {
+  background-color: hotpink;
+  color: crimson;
+  border-radius: 5%;
+  max-width: 100px;
+  max-height: 50px;
+  overflow: hidden;
+}
+
 h1 {
   font-size: var(--font-size-xl);
   text-decoration: underline;
@@ -162,7 +176,26 @@ h2 {
 
 h3 {
   font-size:var(--font-size-rg);
-  
+}
+
+button {
+  padding: 5px;
+  margin: 5px;
+  border-radius: 5%;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: 'wait'
+}
+
+button:active {
+  transform: translateY(2px);
+}
+
+input {
+  padding: 5px;
+  margin: 5px;
 }
 
 p{ 
@@ -203,11 +236,6 @@ input {
       margin-left: 1rem;
     }
 
-    .landing-btn {
-      margin:var(--mar-pad-xl);
-      padding:var(--mar-pad-reg);
-      font-size: var(--font-size-rg);
-    }
 
     label {
       font-size: var(--font-size-rg);

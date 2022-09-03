@@ -5,12 +5,11 @@ import AuthHeader from './AuthHeader';
 
 type headerProps = {
     user: User | null;
-    logoutHandler: ()=> void;
 }
 
 const Header:React.FC <headerProps> = (props) => {
     if(props.user) {
-        return    <AuthHeader user={props.user} logoutHandler={props.logoutHandler}/>
+        return    <AuthHeader user={props.user} />
     } else {
        return <></>
     }

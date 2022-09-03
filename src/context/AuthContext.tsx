@@ -12,11 +12,11 @@ export const AuthContext = createContext<AuthContextInterface | null>(null);
 export const authReducer = (state: any, action: any) => {
     switch (action.type) {
         case 'LOGIN':
-            return { ...state, user: action.payload }
+            return { ...state, user: action.payload.user, token: action.payload.token }
         case 'LOGOUT':
-            return { ...state, user: null }
+            return { ...state, user: null, token : null }
         case 'AUTH_IS_READY':
-            return { user: action.payload, authIsReady: true }
+            return { user: action.payload.user, authIsReady: true }
     };
 };
 
@@ -28,6 +28,7 @@ export const AuthContextProvider: React.FC<React.ReactNode> = ({ children }) => 
 
     useEffect(()=> {
         console.log('useEffect')
+
     }, []);
 
     console.log('Authcontext state: ', state)

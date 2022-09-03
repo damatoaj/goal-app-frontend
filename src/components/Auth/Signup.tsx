@@ -1,15 +1,15 @@
-import axios from 'axios';
-import React, { FormEvent, useRef } from 'react';
-import setAuthToken from '../../utils/setAuthToken';
-import { User } from '../../interfaces/user.model';
-import useSignup from '../../hooks/useSignup';
+import React, { FormEvent, useRef, useState } from 'react';
+import useAuth from '../../hooks/useAuth';
+import './auth.css';
 
+import { emailValidation, passwordDescription, emailDescription } from '../../utils/regex';
 
 const Signup:React.FC = () => {
+    const [showPassword, setShowPassword] = useState(false);
     const usernameInputRef = useRef<HTMLInputElement>(null);
     const emailInputRef = useRef<HTMLInputElement>(null);
     const passwordInputRef = useRef<HTMLInputElement>(null);
-    const { signup, error, isLoading} = useSignup();
+    const { signup, error, isLoading} = useAuth();
 
     const submitHandler = async (e:FormEvent) => {
         e.preventDefault();
@@ -17,25 +17,67 @@ const Signup:React.FC = () => {
         const enteredEmail = emailInputRef.current!.value.trim();
         const enteredPassword = passwordInputRef.current!.value.trim();
        
-        signup({ user: enteredUserName, email:  enteredEmail, password: enteredPassword })
-
-
+        signup({ name: enteredUserName, email:  enteredEmail, password: enteredPassword })
     };
 
     return(
         <form onSubmit={submitHandler}>
             <fieldset>
                 <label htmlFor="name">User name</label>
-                <input type="text" name="name" ref={usernameInputRef} required />
+                <input 
+                    type="text" 
+                    name="name" 
+                    ref={usernameInputRef} 
+                    required
+                    disabled={isLoading ? true : false}
+                    placeholder='    '
+                />
                 <br></br>
                 <label htmlFor="email">Email</label>
-                <input type="email" name="email" ref={emailInputRef} required />
+                <input
+                    disabled={isLoading ? true : false}
+                    type="email" 
+                    name="email" 
+                    ref={emailInputRef} 
+                    pattern={`${emailValidation}`} 
+                    className='email'
+                    title={emailDescription}
+                    placeholder="me@example.com"
+                    required
+                />
                 <br></br>
                 <label htmlFor="password">Password</label>
-                <input type="password" name="password" ref={passwordInputRef} required />
+                <input 
+                    disabled={isLoading ? true : false}
+                    type={showPassword ? 'text': 'password'} 
+                    name="password" 
+                    ref={passwordInputRef} 
+                    className='password'
+                    pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+                    title={passwordDescription}
+                    placeholder="8 characters long"
+                    required
+                />
+                <span>
+                    <input className='checkbox' type='checkbox' onClick={()=> setShowPassword(!showPassword)} />
+                    <i>Show Password</i>
+                </span>
                 <br></br>
-                <button type="submit" className="landing-btn update">Signup</button>
-                {error && <p>{error}</p>}
+                <button 
+                    type="submit" 
+                    disabled={isLoading ? true : false}
+                    className="go"
+                >
+                    Signup
+                </button>
+                <button 
+                    type='reset' 
+                    className='warning'
+                    disabled={isLoading ? true : false}
+                >
+                    Clear
+                </button>
+                {error && <p className="error">{error}</p>}
                 {isLoading && <p>{isLoading}</p>}
             </fieldset>
         </form>

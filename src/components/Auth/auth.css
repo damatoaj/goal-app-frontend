@@ -1,0 +1,44 @@
+input:not([type=checkbox]) {
+    max-width: 500px;
+    width: 60%;
+}
+
+.email {
+    margin-left:45px;
+}
+
+.password {
+    margin-left : 15px;
+}
+
+
+input:not(:placeholder-shown):invalid {
+    color: red;
+    border-color:red;
+}
+
+input:valid{
+    color:green;
+    border-color: green;
+}
+
+input:focus {
+    outline-offset: 5px;
+    color: orange;
+    border-color: orange;
+}
+
+label {
+    margin-left: 10px;
+}
+
+button {
+    margin-top: 10px;
+}
+
+input[type=checkbox] {
+    width: 1em;
+    height: 1em;
+    position: relative;
+    top: 5px;
+}

@@ -1,65 +1,40 @@
 import axios from 'axios';
 import React, { FormEvent, useRef, useState } from 'react';
 import { Outcome } from '../../interfaces/outcomeGoals.model';
-// import { useUser } from '../../App';
-import { validateDate } from '../../utils/validateDate';
-import { minimumStringLength } from '../../utils/minimumStringLength';
-
-type formProps = {
-    setOc : (arg:Outcome)=> void;
-    oc: Outcome | null;
-};
+import { useAuthContext }from '../../hooks/useAuthContext';
+import useOutcome from '../../hooks/useOutcome';
 
 
-const OutcomeForm : React.FC <formProps> = (props) => {
+const OutcomeForm : React.FC  = () => {
+    const { create, error, isLoading } = useOutcome();
     const descInputRef = useRef<HTMLInputElement>(null);
     const dateDueInputRef = useRef<HTMLInputElement>(null);
     const rewardInputRef = useRef<HTMLInputElement>(null);
     const punishmentInputRef = useRef<HTMLInputElement>(null);
-    // const user = useUser();
-    const [error, setError] = useState<String | null>(null);
-    const [isLoading, setIsLoading] = useState<Boolean>(false);
+    const { user } = useAuthContext();
+
+
+    const date = new Date();
+    const [year, month, day] = [date.getFullYear(), date.getMonth(), date.getDate()];
+    const stringDate = `${year}-${month}-${day}`;
      
     
-    // const handleForm = async (e:FormEvent) => {
-    //     e.preventDefault();
-    //     setError(null);
-    //     setIsLoading(true);
+    const handleForm = async (e:FormEvent) => {
+        e.preventDefault();
+        create({
+                description: descInputRef.current!.value.trim(),
+                dateDue: new Date(dateDueInputRef.current!.value),
+                reward: rewardInputRef.current!.value.trim(),
+                punishment: punishmentInputRef.current!.value.trim(),
+                complete: false,
+                performanceGoals: [],
+                userId:user._id
+        })     
+    };
 
-    //     try {
-    //         if(!validateDate(new Date(dateDueInputRef.current!.value))) throw new Error("Goals must be set in the future");
-    //         if(!minimumStringLength(descInputRef.current!.value)) throw new Error('The description should have more detail');
-    //         if(!minimumStringLength(rewardInputRef.current!.value)) throw new Error('The reward should have more detail')
-    //         if(!minimumStringLength(punishmentInputRef.current!.value)) throw new Error('The punishment should have more detail')
-
-    //         const res: any = await axios.post(
-    //             `${process.env.REACT_APP_URL}/outcomes`,
-    //             {
-    //             description: descInputRef.current!.value.trim(),
-    //             dateDue: dateDueInputRef.current!.value,
-    //             reward: rewardInputRef.current!.value.trim(),
-    //             punishment: punishmentInputRef.current!.value.trim(),
-    //             complete: false,
-    //             performanceGoals: [],
-    //             userId:user
-    //         })
-    //         const newOutcome: Outcome = await res.data;
-    //         if(newOutcome) props.setOc(newOutcome);
-    //         setIsLoading(false);
-    //         setError(null);
-    //     } catch (err : any) {
-    //         setError(err.message);
-    //         setIsLoading(false);
-    //     }
-    // };
-
-
-    if(isLoading) {
-        <h1>Loading...</h1>
-    }
     
     return (
-        <form >
+        <form onSubmit={handleForm}>
             <fieldset>
             <label>
                 What's the Goal?
@@ -69,18 +44,20 @@ const OutcomeForm : React.FC <formProps> = (props) => {
                 type="text" 
                 name="description" 
                 ref={descInputRef} 
-                placeholder={props.oc?.description}
+                min='10'
+                // placeholder={props.oc?.description}
                 required
             />
             <br></br>
             <br></br>
             <label>
-                {props.oc ? `Currently due on ${props.oc.dateDue.toString().slice(0,10)}`:'When\'s it Due?'}
+                {/* {props.oc ? `Currently due on ${props.oc.dateDue.toString().slice(0,10)}`:'When\'s it Due?'} */}
             </label>
             <br></br>
             <input 
                 type="date" 
                 name="dueDate" 
+                min={stringDate}
                 ref={dateDueInputRef}
                 required
             />
@@ -94,7 +71,8 @@ const OutcomeForm : React.FC <formProps> = (props) => {
                 type="text" 
                 name="reward" 
                 ref={rewardInputRef} 
-                placeholder={props.oc?.reward}
+                min='10'
+                // placeholder={props.oc?.reward}
                 required
             />
             <br></br>
@@ -107,13 +85,16 @@ const OutcomeForm : React.FC <formProps> = (props) => {
                 type="text" 
                 name="punishment" 
                 ref={punishmentInputRef} 
-                placeholder={props.oc?.punishment}
+                min='10'
+                // placeholder={props.oc?.punishment}
                 required
             />
             <br></br>
             <br></br>
-            <button type="submit" className="landing-btn">Submit</button>
-            {error && <p>{error}</p>}
+            <button type="submit" className="go">Submit</button>
+            <button type='reset' className='warning'>Clear</button>
+            {error && <p className='error'>{error}</p>}
+            {isLoading && <p>Loading...</p>}
             </fieldset>
         </form>
     )
