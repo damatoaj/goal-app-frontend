@@ -13,10 +13,9 @@ const App = () => {
   return (
     <BrowserRouter>
       <Header user={user} />
-      {!user && <Landing />}
     <Routes>
       <Route path='/' >   
-        <Route index element={<Home />} />
+        <Route index element={user ? <Home /> : <Landing />} />
         {user && <Route path=':id' element={<h1>id</h1>} /> }
       </Route>
       {user && (

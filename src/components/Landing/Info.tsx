@@ -9,16 +9,19 @@ type infoProp = {
 
 const Info:React.FC <infoProp> = (props) => {
     return (
-        <section>
-            
+        <section className="infoContainer">
             <article key={props.content.id}>
-                <h2>{props.content.title}</h2>
-                <p>{props.content.p1}</p>
-                <p>{props.content.p2}</p>
-                <p>{props.content.p3}</p>
+                <h2 className={props.content.title.includes('Golz') ? 'banner' : ''}>{props.content.title}</h2>
+                <p>
+                    {props.content.p1}
+                    {props.content.p2}
+                    {props.content.p3}
+                </p>
             </article>
-            <button onClick={props.handlePrev} className="landing-btn">Previous</button>
-            <button onClick={props.handleNext} className="landing-btn">Next</button>
+            <span>
+                <button onClick={props.handlePrev}>Previous</button>
+                <button onClick={props.handleNext}>Next</button>
+            </span>
         </section>
     )
 }
