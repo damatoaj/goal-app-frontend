@@ -12,17 +12,17 @@
 }
 
 
-.authForm input:not(:placeholder-shown):invalid {
+input:not(:placeholder-shown):invalid {
     color: red;
     border-color:red;
 }
 
-.authForm input:valid{
+input:valid{
     color:green;
     border-color: green;
 }
 
-.authForm input:focus {
+input:focus {
     outline-offset: 5px;
     color: orange;
     border-color: orange;
@@ -36,7 +36,7 @@
     margin-top: 10px;
 }
 
-.authForm input[type=checkbox] {
+ input[type=checkbox] {
     width: 1em;
     height: 1em;
     position: relative;

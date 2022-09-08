@@ -1,19 +1,21 @@
-import React, { MouseEvent } from 'react';
+import React from 'react';
 import {Link} from 'react-router-dom';
 import {Outcome} from '../../interfaces/outcomeGoals.model';
 
+import './display.css';
+
 type displayProps = {
     active: Outcome;
-    hidden: Boolean;
-    handleHidden:(e:MouseEvent, h:Boolean) => void;
 }
 
 const Display: React.FC <displayProps> = (props) => {
-
     let date : Date = new Date(props.active.dateDue);
+
     return (
         <article id="dash-header">
-            <h2>{props.active.description}</h2>
+            <Link to={`/outcomes/${props.active._id}`}>
+                <h2 title="Click to see subgoals">{props.active.description}</h2>
+            </Link>
             <h3>Is it complete?</h3>
             <p>{props.active.complete ? 'Yes': 'No'}</p>
             <h3>Due on </h3>
@@ -22,10 +24,6 @@ const Display: React.FC <displayProps> = (props) => {
             <p>{props.active.punishment}</p>
             <h3>How will you reward yourself when you accomplish this goal?</h3>
             <p>{props.active.reward}</p>
-            { props.active.performanceGoals.length < 1 ?
-                <Link to='/newOutcome'>Make Some Performance Goals</Link> :
-                <button onClick={(e) => props.handleHidden(e, props.hidden)}>Show Performance Goals</button>
-            }
         </article>
     )
 };

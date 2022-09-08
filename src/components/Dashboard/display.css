@@ -1,0 +1,25 @@
+#dash-header {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    margin-left: var(--mar-pad-xl);
+    padding:var(--mar-pad-reg);
+    border: 2px solid black;
+  }
+
+  #dash-header > h3 {
+    text-decoration: underline;
+    margin-top: 5px;
+  }
+
+  #dash-header > p {
+    border-bottom: 2px dashed gray;
+    padding-bottom: 5px;
+  }
+
+  #dash-header > button {
+    position: absolute;
+    top: 20%;
+    right: 5%;
+    padding: 12px;
+  }

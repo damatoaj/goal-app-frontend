@@ -11,7 +11,6 @@ type perfProps = {
     delete: (e: FormEvent, id:string, setO:Function, setA:Function, aid:string) => void;
     ogID : String;
     setActive: (arg:Outcome)=> void;
-    active: Outcome;
 }
 
 const Perf: React.FC <perfProps> = (props) => {
@@ -25,7 +24,6 @@ const Perf: React.FC <perfProps> = (props) => {
                 setOutcomes={props.setOutcomes} 
                 ogID={props.ogID}
                 setActive={props.setActive}
-                active={props.active}
             />
         )
     })

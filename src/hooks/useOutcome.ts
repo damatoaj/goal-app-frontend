@@ -1,35 +1,54 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useMemo} from 'react';
 import axios from 'axios';
 import { Outcome } from '../interfaces/outcomeGoals.model';
 import { validateDate } from '../utils/validateDate';
 import { minimumStringLength } from '../utils/minimumStringLength';
-
-interface OutcomeForm {
-    description: string;
-    dateDue: Date;
-    reward: string;
-    punishment: string;
-    complete: boolean;
-    performanceGoals: [];
-    userId: string
-}
+import { useAuthContext } from './useAuthContext';
 
 const useOutcome = () => {
+    const { user } = useAuthContext();
     const [isCanceled, setIsCanceled] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
-    const [outcomes, setOutcomes] = useState<any | null>(null);
+    const [outcomes, setOutcomes] = useState<Outcome[]>([]);
+    const [id, setId] = useState<string>('');
+    const active : Outcome | null = useMemo(() => {
+        if (outcomes.length > 0 && id) {
+            return outcomes.filter((outcome : Outcome) => outcome._id === id)[0]
 
-    const create = async ( form: OutcomeForm) => {
+        } else {
+            return null
+        }
+    }, [id, outcomes])
+
+    const select = ( id:string ) => {
+        setId(id)
+    };
+
+    const deleteOutcome = async ( id: string ) => {
+        setIsLoading(true);
+        setError('');
+        try {
+            await axios.delete(`${process.env.REACT_APP_URL}/outcomes/${id}`);
+
+            if(!isCanceled) {
+                setIsLoading(false);
+                setError('')
+                setOutcomes(prev => prev.filter((outcome: Outcome) => outcome._id !== id));
+            }
+        } catch(err: any) {
+            if (!isCanceled) {
+                console.error(err, err.response)
+                setError (err.response.data);
+                setIsLoading(false);
+            }
+        }
+    };
+
+    const create = async ( form: any) => {
         setIsLoading(true);
         setError('');
 
-        const { dateDue, reward, punishment, description} = form;
-
-        if(!validateDate(dateDue)) throw new Error("Goals must be set in the future");
-        if(!minimumStringLength(description)) throw new Error('The description should have more detail');
-        if(!minimumStringLength(reward)) throw new Error('The reward should have more detail')
-        if(!minimumStringLength(punishment)) throw new Error('The punishment should have more detail')
         try {
             const response : any = await axios.post(`${process.env.REACT_APP_URL}/outcomes`, form)
             
@@ -55,10 +74,11 @@ const useOutcome = () => {
             setIsLoading(true);
             setError('');
             try {
-                const response = await axios.get(`${process.env.REACT_APP_URL}/outcomes`);
+                const response = await axios.get(`${process.env.REACT_APP_URL}/outcomes?id=${user._id}`);
 
                 if (!isCanceled) {
                     setOutcomes(response.data);
+                    if (response.data.length > 0) setId(response.data[0]._id)
                     setIsLoading(false);
                     setError('');
                 }
@@ -70,10 +90,14 @@ const useOutcome = () => {
             }
         };
         get();
-        return ()=> setIsCanceled(true);
-    }, [isCanceled])
 
-    return { outcomes, create, error, isLoading}
+    }, [isCanceled, user._id])
+
+    useEffect(()=> {
+        return () => setIsCanceled(true)
+    }, [])
+
+    return { outcomes, create, error, isLoading, select, active, deleteOutcome }
 }
 
 export default useOutcome;

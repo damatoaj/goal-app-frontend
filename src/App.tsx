@@ -5,6 +5,7 @@ import Home from './components/Dashboard/Home';
 import NewOutcome from './components/NewOutcome/NewOutcome';
 import Landing from './components/Landing/Landing';
 import Header from './components/Header/Header';
+import OutcomeScreen from './components/Screens/Outcome/OutcomeScreen';
 import { useAuthContext } from './hooks/useAuthContext';
 
 const App = () => {
@@ -12,7 +13,7 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <Header user={user} />
+    <Header user={user} />
     <Routes>
       <Route path='/' >   
         <Route index element={user ? <Home /> : <Landing />} />
@@ -23,7 +24,7 @@ const App = () => {
           <Route path='/outcomes' >
             <Route index element={<h1>outcomes list</h1>} />
             <Route path="newOutcome" element={<NewOutcome/>} />
-            <Route path=':id' element={<h1>id</h1>} />
+            <Route path=':id' element={<OutcomeScreen />} />
           </Route>
           <Route path='/performances'>
             <Route index element={<h1>performance list</h1>} />

@@ -1,69 +1,102 @@
 import axios from 'axios';
-import React, { FormEvent, useRef, useState } from 'react'
+import React, { ChangeEvent, FormEvent, FormEventHandler, useRef, useState } from 'react'
 import { Outcome } from '../../interfaces/outcomeGoals.model';
 import { validateDate } from '../../utils/validateDate';
 import { minimumStringLength } from '../../utils/minimumStringLength';
-
+import usePerformance  from '../../hooks/usePerformance';
+import { useParams } from 'react-router-dom';
 type formProps = {
     id: string;
     setOc:(arg: Outcome)=> void;
 };
 
-const PerformanceForm: React.FC <formProps> = (props) => {
-    const descInputRef = useRef<HTMLInputElement>(null);
-    const dateDueInputRef = useRef<HTMLInputElement>(null);
-    const rewardInputRef = useRef<HTMLInputElement>(null);
-    const punishmentInputRef = useRef<HTMLInputElement>(null);
-    const percentInputRef = useRef<HTMLInputElement>(null);
-    const selectRef = useRef<HTMLSelectElement>(null);
-    const [error, setError] = useState<String | null>(null);
-    const [isLoading, setIsLoading] = useState<Boolean>(false);
-    
-    const addPerf = async (e:FormEvent, id:string) => {
-        e.preventDefault();
-        setIsLoading(true);
-        setError(null);
-        try {
-            if(!validateDate(new Date(dateDueInputRef.current!.value))) throw new Error('Date must be in the future');
-            if(!minimumStringLength(descInputRef.current!.value)) throw new Error('The goal needs more detail');
-            if(!minimumStringLength(rewardInputRef.current!.value)) throw new Error('The reward needs more detail');
-            if(!minimumStringLength(punishmentInputRef.current!.value)) throw new Error('The punishment needs more detail');
-            await axios.post(`${process.env.REACT_APP_URL}/outcomes/${id}/performances`, {
-                description: descInputRef.current!.value.trim(),
-                dueDate: dateDueInputRef.current!.value,
-                reward: rewardInputRef.current!.value.trim(),
-                punishment: punishmentInputRef.current!.value.trim(),
-                improveBy: {
-                    unit: selectRef.current!.value,
-                    number: percentInputRef.current!.value,
-                },
-                complete: false,
-                processGoals: []
-            });
-            const res : any = await axios.get(`${process.env.REACT_APP_URL}/outcomes/${id}`);
-            const data : Outcome = await res.data;
-           
-            if (data) props.setOc(data);
+const date = new Date();
+let [year, month, day] = [date.getFullYear(), date.getMonth(), date.getDate()];
 
-            descInputRef.current!.value = '';
-            dateDueInputRef.current!.value = '';
-            rewardInputRef.current!.value = '';
-            punishmentInputRef.current!.value = '';
-            percentInputRef.current!.value = '';
-            setError(null);
-            setIsLoading(false);
-        } catch (err: any) {
-            setError(err.message);
-            setIsLoading(false);
+const PerformanceForm: React.FC <formProps> = (props) => {
+    const { id } = useParams();
+
+    const { create, error, isLoading} = usePerformance(id);
+  
+    const [form, setForm] = useState({
+        description: '',
+        reward: '',
+        punishment: '',
+        dateDue: '',
+        complete: false,
+        processGoals: [],
+        improveBy: {
+            number: 0,
+            unit: 'units'
         }
+    });
+
+
+    const stringDate = () => {
+        month = month + 1
+        if (month > 9 && day > 9) {
+            return `${year}-${month}-${day}`
+        }
+        if (month > 9) {
+            return `${year}-${month}-0${day}`
+        }
+        if(day > 9) {
+            return `${year}-0${month}-${day}`
+        }
+
+        return `${year}-0${month}-0${day}`
     };
 
-    if (isLoading) {
-        <h1>Loading...</h1>
+    const string = stringDate();
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const { name, value} = e.target;
+        setForm((prev) => {
+            if (name === 'number') {
+                console.log(name, ",-- nasme", prev)
+            }
+
+                return {
+                    ...prev,
+                    [name]:value
+                }
+        })
+    };
+
+    const handleSelect = (e: ChangeEvent<HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        setForm((prev) => {
+            return {
+                ...prev, improveBy: { ...prev.improveBy, [name]:value}
+            }
+        })
     }
 
+    const handleSubmit = async (e:FormEvent) => {
+        e.preventDefault();
+        await create(form)
+        if (!error && !isLoading) {
+            alert('Success')
+        }
+    }
+
+    const reset = () => {
+        setForm(prev => {
+        return {
+            ...prev,
+            description: '',
+            reward: '',
+            dateDue: '',
+            punishment: '',
+            improveBy: {
+                number: 0,
+                unit: 'units'
+            }
+        }
+    })};
+
     return (
-        <form onSubmit={(e)=> addPerf(e, props.id)}>
+        <form onSubmit={handleSubmit}>
             <fieldset>
                 <label htmlFor="description">
                     What's the goal?
@@ -71,8 +104,10 @@ const PerformanceForm: React.FC <formProps> = (props) => {
                 <br></br>
                 <input 
                     type="text" 
-                    name="description" 
-                    ref={descInputRef}
+                    name="description"
+                    value={form.description} 
+                    placeholder=' '
+                    onChange={handleChange}
                     required
                 />
                 <br></br>
@@ -83,8 +118,11 @@ const PerformanceForm: React.FC <formProps> = (props) => {
                 <br></br>
                 <input 
                     type="date" 
-                    name="dueDate" 
-                    ref={dateDueInputRef}
+                    name="dateDue"
+                    min={string}
+                    value={form.dateDue}
+                    placeholder={' '}
+                    onChange={handleChange}
                     required
                 />
                 <br></br>
@@ -94,12 +132,20 @@ const PerformanceForm: React.FC <formProps> = (props) => {
                 </label>
                 <br></br>
                 <input 
+                    min='0'
                     type="number" 
-                    name="improveNum" 
-                    ref={percentInputRef}
+                    name="number" 
+                    value={form.improveBy.number}
+                    onChange={handleChange}
+                    placeholder='0'
                     required
                 />
-                <select defaultValue="units" name="improveUnit" ref={selectRef}>
+                <select 
+                    defaultValue="units" 
+                    name="unit"
+                    value={form.improveBy.unit}
+                    onChange={handleSelect}
+                >
                     <option value="units">Units</option>
                     <option value="percent">Percent</option>
                     <option value="kg">KG</option>
@@ -114,7 +160,9 @@ const PerformanceForm: React.FC <formProps> = (props) => {
                 <input 
                     type="text" 
                     name="reward" 
-                    ref={rewardInputRef}
+                    value={form.reward}
+                    onChange={handleChange}
+                    placeholder=' '
                     required
                 />
                 <br></br>
@@ -125,13 +173,17 @@ const PerformanceForm: React.FC <formProps> = (props) => {
                 <input 
                     type="text" 
                     name="punishment" 
-                    ref={punishmentInputRef}
+                    value={form.punishment}
+                    onChange={handleChange}
+                    placeholder=' '
                     required
                 />
                 <br></br>
                 <br></br>
-                <button type="submit" className="landing-btn">Add</button>
-                {error && <p>{error}</p>}
+                <button type="submit" className="go">Add</button>
+                <button className='warning' onClick={reset}>Clear</button>
+                {error && <p className='error'>{error}</p>}
+                {isLoading && <p>Loading...</p>}
             </fieldset>
         </form>
     )

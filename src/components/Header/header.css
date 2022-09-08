@@ -1,0 +1,15 @@
+header {
+    border-bottom: 2px dashed grey;
+}
+
+header a:hover {
+    color: orange;
+}
+
+header a:active{
+    color:green;
+}
+
+header > h3::first-letter {
+    color: blue;
+}

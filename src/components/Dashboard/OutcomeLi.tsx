@@ -1,27 +1,45 @@
-import React, { MouseEvent, useRef } from 'react';
+import React, { MouseEvent, useRef, useState } from 'react';
 import {Outcome} from '../../interfaces/outcomeGoals.model';
 
+import './li.css'
+
+import Modal from '../Modal/Modal'
 type liProps = {
-    id : number;
+    id : string;
     description: string;
     handleActive: (e:MouseEvent)=> void;
-    delete: (e:MouseEvent)=> void;
-    active: Outcome;
+    deleteOutcome: (id:string)=> void;
+    active: Outcome | null;
 }
 
 const OutcomeLi: React.FC <liProps> = (props) => {
-    const btn = useRef<HTMLButtonElement>(null);
-    
-    if (btn.current && btn.current.value === props?.active?.description) {
-        btn.current.className = 'activeBtn';
-    } else if (btn.current && btn.current.value !== props.active.description) {
-        btn.current.className= "";
+    const [show, setShow] = useState<boolean>(false);
+
+
+    const handleDelete = () => {
+        setShow(false);
+        props.deleteOutcome(props.id)
+    };
+
+    const handleShow = () => {
+        setShow(!show)
     }
     return(
-        <li id="outcome-li">
-            <button onClick={props.handleActive} name={props.id.toString()} value={props.description} ref={btn}>{props.description}</button>
-            <button className="delete-circle warning" onClick={props.delete}  name={props.active?._id}>x</button>
-        </li>
+        <>
+            <li className="sidebar-li">
+                <h3 onClick={props.handleActive} id={props.id}>{props.description}</h3>
+                <button className="error" onClick={handleShow}  name={props.active?._id}>x</button>
+            </li>
+            {show && (
+                <Modal 
+                    title="Are you sure you?"
+                    isOpened={show}
+                    onProceed={handleDelete}
+                    onClose={handleShow}
+                    children={<h1>hello</h1>}
+                />
+            )}
+        </>
     )
 };
 

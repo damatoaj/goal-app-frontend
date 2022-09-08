@@ -1,5 +1,4 @@
-import React, {useState, useEffect} from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 import OutcomeForm from './OutcomeForm';
 import {Outcome} from '../../interfaces/outcomeGoals.model';
 // import { useUser } from '../../App';

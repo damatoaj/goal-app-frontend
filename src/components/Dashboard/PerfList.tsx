@@ -14,7 +14,6 @@ type listProp = {
     delete: (e: FormEvent, id:string, setO:Function, setA:Function, aid:string) => void;
     ogID: String;
     setActive:(arg:Outcome)=> void;
-    active: Outcome;
 }
 
 const PerfList: React.FC <listProp> = (props) => {
@@ -30,27 +29,27 @@ console.log(props, 'perf list')
 
     let date : Date = new Date(props.performance.dueDate);
 
-    const updatePerformance = async (e:FormEvent, id:string, setO:Function, setA:Function) => {
-        e.preventDefault();
-        try {
-                await axios.put(`${process.env.REACT_APP_URL}/performances/${id}`, {
-                dateDue: new Date(dateDue),
-                completed: completed,
-                reward: reward,
-                punishment: punishment,
-                percentImproved: percentImproved
-            });
-            const res : any = await axios.get(`${process.env.REACT_APP_URL}/outcomes`);
-            const data : Outcome[] = await res.data;
-            if (data) {
-                let a : Outcome | undefined = data.find(d => d._id === props.active._id);
-                setO(data);
-                if(a) setA(a);
-            }
-        } catch(err) {
-            console.log(err)
-        }
-    };
+    // const updatePerformance = async (e:FormEvent, id:string, setO:Function, setA:Function) => {
+    //     e.preventDefault();
+    //     try {
+    //             await axios.put(`${process.env.REACT_APP_URL}/performances/${id}`, {
+    //             dateDue: new Date(dateDue),
+    //             completed: completed,
+    //             reward: reward,
+    //             punishment: punishment,
+    //             percentImproved: percentImproved
+    //         });
+    //         const res : any = await axios.get(`${process.env.REACT_APP_URL}/outcomes`);
+    //         const data : Outcome[] = await res.data;
+    //         // if (data) {
+    //         //     let a : Outcome | undefined = data.find(d => d._id === props.active._id);
+    //         //     setO(data);
+    //         //     if(a) setA(a);
+    //         // }
+    //     } catch(err) {
+    //         console.log(err)
+    //     }
+    // };
 
     const showForm = (e:MouseEvent) => {
         e.preventDefault();
@@ -63,8 +62,6 @@ console.log(props, 'perf list')
     }
 
     return (
-        <>
-            {!toggle? 
             <>
             <form>
                 <fieldset>
@@ -134,50 +131,19 @@ console.log(props, 'perf list')
                     <br></br>
                     <button 
                         className='update'
-                        onClick={(e)=> updatePerformance(
-                        e, 
-                        props.performance._id, 
-                        props.setOutcomes, 
-                        props.setActive
-                    )}>
+                    >
                         Update
                     </button>
                     <br></br>
                     <button 
                         className="warning"
-                        onClick={(e)=> props.delete(
-                        e,
-                        props.performance._id, 
-                        props.setOutcomes, 
-                        props.setActive, 
-                        props.active._id
-                    )}>
+                        >
                         Delete
                     </button>
                     <br></br>
                     {props.performance.processGoals.length > 0 ? <button onClick={showProcess}>{hidePro ? 'Hide Process Goals': 'Show Process Goals'}</button> : <></>}
                 </fieldset>
             </form>
-            <ProcessList 
-                performance={props.performance} 
-                setOutcomes={props.setOutcomes}
-                setActive={props.setActive}
-                active={props.active}
-                hidePro={hidePro}
-                setHidePro={setHidePro}
-            />
-            </>
-            :
-            <ProcessForm 
-                performance={props.performance} 
-                setToggle={setToggle} 
-                toggle={toggle} 
-                ogID={props.ogID} 
-                setOutcomes={props.setOutcomes}
-                setActive={props.setActive}
-                active={props.active}
-            />
-        }
         </>
     )
 };

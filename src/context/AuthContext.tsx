@@ -14,7 +14,7 @@ export const authReducer = (state: any, action: any) => {
         case 'LOGIN':
             return { ...state, user: action.payload.user, token: action.payload.token }
         case 'LOGOUT':
-            return { ...state, user: null, token : null }
+            return { authIsReady: false, user: null, token : null }
         case 'AUTH_IS_READY':
             return { user: action.payload.user, authIsReady: true }
     };

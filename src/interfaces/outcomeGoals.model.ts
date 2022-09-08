@@ -4,8 +4,9 @@ export interface Outcome {
     _id: string;
     description: string;
     dateDue: Date;
-    complete: Boolean;
+    complete: boolean;
     reward: string;
     punishment: string;
     performanceGoals: Performance[];
+    userId: string;
 }

@@ -103,14 +103,7 @@ fieldset {
 main {
   margin: var(--mar-pad-s);
 }
-#dash-header {
-  display: flex;
-  justify-content: space-around;
-  flex-direction: column;
-  margin-left: var(--mar-pad-xl);
-  padding:var(--mar-pad-reg);
-  border: 2px solid black;
-}
+
 
 button.go:hover {
   background-color: var(--go-clr);
@@ -124,6 +117,11 @@ button.warning:hover {
 .update:hover {
   background-color: var(--go-clr);
 }
+
+.loading {
+  cursor: wait;
+}
+
 
 
 #dash-col-2 {
@@ -196,6 +194,7 @@ button:active {
 input {
   padding: 5px;
   margin: 5px;
+  width: 90%;
 }
 
 p{ 

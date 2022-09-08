@@ -10,6 +10,6 @@ export interface Performance {
     };
     reward: string;
     punishment: string;
-    completed: Boolean;
+    completed: boolean;
     processGoals: Process[];
 }
