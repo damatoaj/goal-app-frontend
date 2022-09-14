@@ -3,17 +3,7 @@ import React, {FormEvent, useState} from 'react'
 import { Outcome } from '../../interfaces/outcomeGoals.model';
 import {Performance} from '../../interfaces/performanceGoals.model';
 
-type pfProps = {
-    performance: Performance;
-    setToggle: (arg:Boolean) => void;
-    toggle: Boolean;
-    ogID:String;
-    setOutcomes:(arg:Outcome[]) => void;
-    setActive: (arg:Outcome)=> void;
-    active: Outcome;
-}
-
-const ProcessForm: React.FC <pfProps> = (props) => {
+const ProcessForm: React.FC  = () => {
     const [action, setAction] = useState <string>('');
     const [duration, setDuration] = useState<number>(0);
     const [frequency, setFrequency] = useState<number>(0);
@@ -65,7 +55,7 @@ const ProcessForm: React.FC <pfProps> = (props) => {
 
 
     return (
-        <fieldset id="pgForm">
+        <fieldset>
             <h3>New Process Goal</h3>
             <form>
                 <label htmlFor="action">
@@ -126,19 +116,21 @@ const ProcessForm: React.FC <pfProps> = (props) => {
                 <br></br>
                 <br></br>
                 <button 
-                    onClick={(e)=> handleSubmit(
-                            e, 
-                            props.ogID, 
-                            props.performance._id, 
-                            props.active._id,
-                            props.setOutcomes, 
-                            props.setActive,
-                            props.setToggle
-                        )}
+                    // onClick={(e)=> handleSubmit(
+                    //         e, 
+                    //         // props.ogID, 
+                    //         // props.performance._id, 
+                    //         // props.active._id,
+                    //         // props.setOutcomes, 
+                    //         // props.setActive,
+                    //         // props.setToggle
+                    //     )}
                 >
                     Submit
                 </button>
-                <button onClick={()=> props.setToggle(false)}>
+                <button 
+                    // onClick={()=> props.setToggle(false)}
+                >
                     X
                 </button>
                 {isLoading && <p>Loading...</p>}

@@ -28,11 +28,18 @@ const OutcomeLi: React.FC <liProps> = (props) => {
         <>
             <li className="sidebar-li">
                 <h3 onClick={props.handleActive} id={props.id}>{props.description}</h3>
-                <button className="error" onClick={handleShow}  name={props.active?._id}>x</button>
+                <button 
+                    className="error" 
+                    onClick={handleShow}  
+                    name={props.active?._id}
+                    title='Delete Outcome Goal'
+                >
+                    x
+                </button>
             </li>
             {show && (
                 <Modal 
-                    title="Are you sure you?"
+                    title="Are you sure?"
                     isOpened={show}
                     onProceed={handleDelete}
                     onClose={handleShow}

@@ -7,23 +7,22 @@ import "react-datepicker/dist/react-datepicker.css";
 
 type perfProps = {
     performances: Performance [];
-    setOutcomes: (arg: Outcome[]) => void;
-    delete: (e: FormEvent, id:string, setO:Function, setA:Function, aid:string) => void;
-    ogID : String;
-    setActive: (arg:Outcome)=> void;
+    delete: (id: string) => void;
+    oId : string;
+    update: (id: string, form : object) => void;
+    error: string;
 }
 
 const Perf: React.FC <perfProps> = (props) => {
-    console.log(props, 'performance')
     let list = props.performances.map((performance:Performance,key:number) => {
         return (
             <PerfList
                 key={key}
                 performance={performance} 
                 delete={props.delete} 
-                setOutcomes={props.setOutcomes} 
-                ogID={props.ogID}
-                setActive={props.setActive}
+                oId={props.oId}
+                update={props.update}
+                error={props.error}
             />
         )
     })

@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import {BrowserRouter, Navigate, Routes, Route} from 'react-router-dom';
 
 import Home from './components/Dashboard/Home';
 import NewOutcome from './components/NewOutcome/NewOutcome';
@@ -7,6 +7,8 @@ import Landing from './components/Landing/Landing';
 import Header from './components/Header/Header';
 import OutcomeScreen from './components/Screens/Outcome/OutcomeScreen';
 import { useAuthContext } from './hooks/useAuthContext';
+import NewPerformanceScreen from './components/Screens/NewPerformance/NewPerformanceScreen';
+import NewProcessScreen from './components/Screens/NewProcessScreen/NewProcessScreen';
 
 const App = () => {
   const { user } = useAuthContext();
@@ -28,14 +30,15 @@ const App = () => {
           </Route>
           <Route path='/performances'>
             <Route index element={<h1>performance list</h1>} />
-            <Route path='newPerformance' element={<h1>performance form</h1>} />
+            <Route path='newPerformance/:id' element={<NewPerformanceScreen />} />
             <Route path=':id' element={<h1>id</h1>} />
           </Route>
           <Route path='/processes' >
             <Route index element={<h1>process list</h1>} />
-            <Route path='newProcess' element={<h1>process form</h1>} />
+            <Route path='newProcess/:oid/:pid' element={<NewProcessScreen />} />
             <Route path=':id' element={<h1>id</h1>} />
           </Route>
+          <Route path='*' element={<Navigate to='/' replace />} />
         </>
       )}
     </Routes>

@@ -2,7 +2,7 @@ import { Process } from './processGoals.models'
 
 export interface Performance {
     _id: string;
-    dueDate: Date;
+    dateDue: Date;
     description: string;
     improveBy: {
         number:number,

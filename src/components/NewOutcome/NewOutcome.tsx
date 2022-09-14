@@ -3,7 +3,6 @@ import OutcomeForm from './OutcomeForm';
 import {Outcome} from '../../interfaces/outcomeGoals.model';
 // import { useUser } from '../../App';
 
-import PerformanceForm from './PerformanceForm';
 import SelectOutcome from './SelectOutcome';
 
 const NewOutcome: React.FC = () => {
@@ -39,7 +38,7 @@ const NewOutcome: React.FC = () => {
                 <h1>{oc.description}</h1>
                 <OutcomeForm />
                 {oc && oc.performanceGoals?.length > 0 ? <h2>Add more performance goals...</h2> : <h2>Add a Performance Goal</h2>}
-                <PerformanceForm id={oc._id} setOc={setOc} />
+
             </main>
         )
     }

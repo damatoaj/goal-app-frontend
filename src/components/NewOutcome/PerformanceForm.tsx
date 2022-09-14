@@ -1,21 +1,11 @@
-import axios from 'axios';
 import React, { ChangeEvent, FormEvent, FormEventHandler, useRef, useState } from 'react'
-import { Outcome } from '../../interfaces/outcomeGoals.model';
-import { validateDate } from '../../utils/validateDate';
-import { minimumStringLength } from '../../utils/minimumStringLength';
+
 import usePerformance  from '../../hooks/usePerformance';
-import { useParams } from 'react-router-dom';
-type formProps = {
-    id: string;
-    setOc:(arg: Outcome)=> void;
-};
+import { useParams, useNavigate } from 'react-router-dom';
 
-const date = new Date();
-let [year, month, day] = [date.getFullYear(), date.getMonth(), date.getDate()];
-
-const PerformanceForm: React.FC <formProps> = (props) => {
+const PerformanceForm: React.FC = () => {
     const { id } = useParams();
-
+    const navigate = useNavigate();
     const { create, error, isLoading} = usePerformance(id);
   
     const [form, setForm] = useState({
@@ -26,12 +16,13 @@ const PerformanceForm: React.FC <formProps> = (props) => {
         complete: false,
         processGoals: [],
         improveBy: {
-            number: 0,
+            number: '',
             unit: 'units'
         }
     });
 
-
+    const date = new Date();
+    let [year, month, day] = [date.getFullYear(), date.getMonth(), date.getDate()];
     const stringDate = () => {
         month = month + 1
         if (month > 9 && day > 9) {
@@ -47,19 +38,25 @@ const PerformanceForm: React.FC <formProps> = (props) => {
         return `${year}-0${month}-0${day}`
     };
 
-    const string = stringDate();
-
+    const yyyyMMDD : string = stringDate();
+    
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value} = e.target;
-        setForm((prev) => {
+        setForm(prev => {
             if (name === 'number') {
-                console.log(name, ",-- nasme", prev)
-            }
-
+                return {
+                    ...prev,
+                    improveBy : {
+                        ...prev.improveBy,
+                        number:value,
+                    }
+                }
+            } else {
                 return {
                     ...prev,
                     [name]:value
                 }
+            }
         })
     };
 
@@ -76,7 +73,8 @@ const PerformanceForm: React.FC <formProps> = (props) => {
         e.preventDefault();
         await create(form)
         if (!error && !isLoading) {
-            alert('Success')
+            alert('Successfully Made Performance Goal');
+            navigate(`/outcomes/${id}`)
         }
     }
 
@@ -89,7 +87,7 @@ const PerformanceForm: React.FC <formProps> = (props) => {
             dateDue: '',
             punishment: '',
             improveBy: {
-                number: 0,
+                number: '',
                 unit: 'units'
             }
         }
@@ -119,9 +117,9 @@ const PerformanceForm: React.FC <formProps> = (props) => {
                 <input 
                     type="date" 
                     name="dateDue"
-                    min={string}
+                    min={yyyyMMDD}
                     value={form.dateDue}
-                    placeholder={' '}
+                    placeholder={'mm/dd/yyyy'}
                     onChange={handleChange}
                     required
                 />
@@ -137,7 +135,7 @@ const PerformanceForm: React.FC <formProps> = (props) => {
                     name="number" 
                     value={form.improveBy.number}
                     onChange={handleChange}
-                    placeholder='0'
+                    placeholder=' '
                     required
                 />
                 <select 

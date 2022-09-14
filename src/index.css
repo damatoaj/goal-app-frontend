@@ -16,9 +16,9 @@ body {
   --mar-pad-xs: calc(var(--mar-pad-reg)*.5);
 
   --font-size-sm: 1vw;
-  --font-size-rg: calc(var(--font-size-sm) * 5);
-  --font-size-lg: calc(var(--font-size-sm) * 10);
-  --font-size-xl: calc(var(--font-size-sm) * 15);
+  --font-size-rg: calc(var(--font-size-sm) * 2);
+  --font-size-lg: calc(var(--font-size-sm) * 3);
+  --font-size-xl: calc(var(--font-size-sm) * 4);
 
   --warning-clr: red;
   --go-clr:green;
@@ -31,15 +31,6 @@ body {
 ul {
   list-style: none; 
   padding:0;
-}
-
-#pgForm {
-  position: relative;
-  height:100%;
-  width:100%;
-  padding:var(--mar-pad-reg);
-  margin-top:var(--mar-pad-reg);
-  background-color: var(--sec-clr);
 }
 
 #landing {
@@ -214,87 +205,3 @@ li > button {
 input {
   border:2px solid black;
 }
-
-  @media only screen and (min-width: 750px) {
-    :root {
-      --font-size-sm:.4vw;
-    }
-    button {
-      font-size: var(--font-size-rg);
-    }
-    legend {
-      font-size: var(--font-size-lg);
-    }
-    input[type=checkbox] {
-      width: 2rem;
-      height:2rem;
-    
-    }
-    .perf-list {
-      top: 7.5rem;
-      margin-left: 1rem;
-    }
-
-
-    label {
-      font-size: var(--font-size-rg);
-      margin-right:var(--mar-pad-reg);
-    }
-    input{
-      font-size: var(--font-size-rg);
-      padding-left: var(--mar-pad-xl);
-    }
-
-    a {
-      font-size: var(--font-size-rg);
-    }
-
-    select {
-      font-size: var(--font-size-rg);
-      padding:var(--mar-pad-s);
-      margin-left: var(--mar-pad-lg);
-    }
-
-    #outcome-li > button {
-      font-size: var(--font-size-rg);
-    }
-
-    .delete-circle {
-      left: 10.3rem;
-      top: -5rem;
-      padding:var(--mar-pad-lg);
-      width:20%;
-    }
-    input {
-      margin-top: var(--mar-pad-reg);
-      margin-bottom: var(--mar-pad-reg);
-    }
-  }
-
-
-  @media only screen and (min-width: 700px) {
-    .delete-circle {
-      left: 11rem;
-      top: -2rem;
-      width:14%;
-    }
-  }
-
-  @media only screen and (min-width: 1000px) {
-    .delete-circle {
-      left: 13rem;
-      top: -2.5rem;
-    }
-  }
-
-  @media only screen and (min-width:1300px) {
-    :root{
-      --font-size-sm: .3vw;
-    }
-
-    .delete-circle {
-      left: 20rem;
-      top:-3rem;
-      width:12%;
-    }
-  }

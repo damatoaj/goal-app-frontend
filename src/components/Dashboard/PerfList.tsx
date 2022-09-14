@@ -1,108 +1,102 @@
-import React, {useState, FormEvent, MouseEvent} from 'react';
-import axios from 'axios';
+import React, {useState, MouseEvent, ChangeEvent} from 'react';
 import {Performance} from '../../interfaces/performanceGoals.model';
-import {Outcome} from '../../interfaces/outcomeGoals.model';
-import DatePicker from 'react-datepicker';
-
-import "react-datepicker/dist/react-datepicker.css";
-import ProcessForm from './ProcessForm';
-import ProcessList from './ProcessList';
+import { Link } from 'react-router-dom';
 
 type listProp = {
     performance: Performance;
-    setOutcomes: (arg: Outcome[]) => void;
-    delete: (e: FormEvent, id:string, setO:Function, setA:Function, aid:string) => void;
-    ogID: String;
-    setActive:(arg:Outcome)=> void;
+    delete: (id: string) => void;
+    oId: string;
+    update: (id:string, form: object) => void;
+    error: string;
 }
 
 const PerfList: React.FC <listProp> = (props) => {
-    const [toggle, setToggle] = useState<Boolean>(false);
-    const [dateDue, setDateDue] = useState<Date>(new Date());
-    const [completed, setCompleted] = useState<Boolean>(false);
-    const [reward, setReward] = useState<String>('');
-    const [punishment, setPunishment] = useState<String>('');
-    const [percentImproved, setPercentImproved] = useState<Number>(0);
+    const  [form, setForm] = useState({
+        ...props.performance,
+        dateDue: props.performance.dateDue.toString().substring(0, 10)
+    });
+
     const [hidePro, setHidePro] = useState<Boolean>(false);
 
-console.log(props, 'perf list')
-
-    let date : Date = new Date(props.performance.dueDate);
-
-    // const updatePerformance = async (e:FormEvent, id:string, setO:Function, setA:Function) => {
-    //     e.preventDefault();
-    //     try {
-    //             await axios.put(`${process.env.REACT_APP_URL}/performances/${id}`, {
-    //             dateDue: new Date(dateDue),
-    //             completed: completed,
-    //             reward: reward,
-    //             punishment: punishment,
-    //             percentImproved: percentImproved
-    //         });
-    //         const res : any = await axios.get(`${process.env.REACT_APP_URL}/outcomes`);
-    //         const data : Outcome[] = await res.data;
-    //         // if (data) {
-    //         //     let a : Outcome | undefined = data.find(d => d._id === props.active._id);
-    //         //     setO(data);
-    //         //     if(a) setA(a);
-    //         // }
-    //     } catch(err) {
-    //         console.log(err)
-    //     }
-    // };
-
-    const showForm = (e:MouseEvent) => {
-        e.preventDefault();
-        setToggle(true);
-    }
+    let date : Date = new Date(props.performance.dateDue);
 
     const showProcess = (e:MouseEvent) => {
         e.preventDefault();
         setHidePro(!hidePro);
     }
 
+    const handleDelete = async () => {
+        await props.delete(form._id)
+        if (!props.error) {
+            alert('Deleted Performance Goal')
+        } else {
+            alert('Could Not Delete')
+        }
+    };
+
+    const handleUpdate = async () => {
+        await props.update(form._id, form)
+        if (!props.error) {
+            alert('Successfully Updated Goal')
+        } else {
+            alert('Could not update')
+        }
+    }
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const { name, value, checked } = e.target;
+
+        if (name === 'completed') {
+            setForm(prev=> {
+                return { ...prev, [name]:checked }
+            })
+        } else if (name === 'number') {
+            setForm(prev => {
+                return { ...prev, improveBy: {...prev.improveBy, [name]: parseInt(value)}}
+            })
+        } else {
+            setForm(prev=> {
+                return { ...prev, [name]:value }
+            });
+        }
+    };
+
     return (
             <>
             <form>
                 <fieldset>
                     <legend>{props.performance.description}</legend>
-                    {props.performance.completed === true ?
-                        <>
                         <label htmlFor="completed" >
-                            You finished it, way to go
+                            {props.performance.completed === true ? 'You finished it, way to go' : 'Not Done Yet'}
                         </label>
                         <input 
                             type="checkbox" 
                             name="completed" 
-                            checked onChange={(e)=>setCompleted(e.target.checked)}
+                            checked={form.completed}
+                            onChange={handleChange}
                         />
-                        </>
-                        :
-                        <>
-                        <label htmlFor="completed">
-                            Not done yet
-                        </label>
-                        <input 
-                            type="checkbox" 
-                            name="completed" 
-                            onChange={(e)=>setCompleted(e.target.checked)} 
-                        />
-                        </>
-                    }
                     <br></br>
                     <label htmlFor="dueDate">
                         Currently due on <time>{date.toLocaleDateString()}</time>
                     </label>
-                    <DatePicker selected={dateDue} name="dateDue" onChange={(date: Date)=> setDateDue(date)} />
+                    <input 
+                        type='date'
+                        value={form.dateDue}
+                        name="dateDue" 
+                        onChange={handleChange} 
+                        required
+                    />
                     <br></br>
                     <label htmlFor="reward">
                         How will you reward yourself?
                     </label>
                     <input 
                         type="text" 
-                        name="reward"  
-                        placeholder={props.performance.reward} 
-                        onChange={(e)=> setReward(e.target.value)}
+                        name="reward" 
+                        value={form.reward}
+
+                        onChange={handleChange}
+                        required
                     />
                     <br></br>
                     <label htmlFor="punishment">
@@ -111,8 +105,9 @@ console.log(props, 'perf list')
                     <input 
                         type="text" 
                         name="punishment" 
-                        placeholder={props.performance.punishment} 
-                        onChange={(e)=>setPunishment(e.target.value)}
+                        value={form.punishment} 
+                        onChange={handleChange}
+                        required
                     />
                     <br></br>
                     <label htmlFor="percentImproved">
@@ -120,29 +115,37 @@ console.log(props, 'perf list')
                     </label>
                     <input 
                         type="number" 
-                        name="percentImproved"  
-                        placeholder={props.performance.improveBy.number.toString()} 
-                        onChange={(e)=>setPercentImproved(e.target.valueAsNumber)}
+                        name="number"  
+                        value={form.improveBy.number}          
+                        onChange={handleChange}
+                        required
                     />
                     <br></br>
-                    <button onClick={(e)=> showForm(e)}>
-                        Add Process Goal
-                    </button>
+                    <Link to={`/processes/newProcess/${props.oId}/${props.performance._id}`}>
+                        <button>
+                            Add Process Goal
+                        </button>
+                    </Link>
                     <br></br>
                     <button 
+                        type="button"
                         className='update'
+                        onClick={handleUpdate}
                     >
                         Update
                     </button>
-                    <br></br>
+                    
                     <button 
+                        type='button'
                         className="warning"
-                        >
+                        onClick={handleDelete}
+                    >
                         Delete
                     </button>
-                    <br></br>
                     {props.performance.processGoals.length > 0 ? <button onClick={showProcess}>{hidePro ? 'Hide Process Goals': 'Show Process Goals'}</button> : <></>}
                 </fieldset>
+                {!form._id && <p>Loading...</p>}
+                {props.error && <p className='error'>{props.error}</p>}
             </form>
         </>
     )
