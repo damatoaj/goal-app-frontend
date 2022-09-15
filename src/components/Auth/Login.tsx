@@ -19,7 +19,7 @@ const Login:React.FC  = ( ) => {
     };
 
     return (
-        <form onSubmit={submitHandler} className='authForm'>
+        <form onSubmit={submitHandler} className='form'>
             <fieldset>
                 <label htmlFor="email">Email</label>
                 <input 

@@ -1,11 +1,9 @@
-import axios from 'axios';
-import React, { useEffect, useState, FormEvent, useRef, MouseEvent} from 'react';
+import React, { useState, useRef, MouseEvent} from 'react';
 import { Outcome } from '../../interfaces/outcomeGoals.model';
-import { Navigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 import OutcomeLi from './OutcomeLi';
-import Perf from './Performance';
 import Display from './Display';
 
 import useOutcome from '../../hooks/useOutcome';

@@ -1,8 +1,4 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Outcome } from '../../../interfaces/outcomeGoals.model';
-import PerfList from '../../Dashboard/PerfList';
 import Performance from '../../Dashboard/Performance'
 import usePerformance from '../../../hooks/usePerformance';
 import './outcome.css';

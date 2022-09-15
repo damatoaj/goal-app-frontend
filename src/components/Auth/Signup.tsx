@@ -21,7 +21,7 @@ const Signup:React.FC = () => {
     };
 
     return(
-        <form onSubmit={submitHandler} className='authForm'>
+        <form onSubmit={submitHandler} className='form'>
             <fieldset>
                 <label htmlFor="name">User name</label>
                 <input 

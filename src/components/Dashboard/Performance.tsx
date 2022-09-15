@@ -1,9 +1,6 @@
-import React, { FormEvent} from 'react';
+import React from 'react';
 import PerfList from './PerfList';
 import {Performance} from '../../interfaces/performanceGoals.model';
-import {Outcome} from '../../interfaces/outcomeGoals.model';
-
-import "react-datepicker/dist/react-datepicker.css";
 
 type perfProps = {
     performances: Performance [];

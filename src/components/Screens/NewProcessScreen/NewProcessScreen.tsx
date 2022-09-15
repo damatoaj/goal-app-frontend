@@ -1,11 +1,15 @@
-import React from 'react';
 import ProcessForm from '../../Dashboard/ProcessForm';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 const NewProcessScreen = () => {
-    const { oid, pid } = useParams();
+    const { oid } = useParams();
     return (
         <>
-            <h1>Process Screen</h1>
+            <span>
+                <h1>Process Screen</h1>
+                <Link to={`/outcomes/${oid}`}>
+                   Back
+                </Link>
+            </span>
             <ProcessForm />
         </>
     )

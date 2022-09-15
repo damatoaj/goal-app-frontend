@@ -1,6 +1,7 @@
 import React, {useState, MouseEvent, ChangeEvent} from 'react';
 import {Performance} from '../../interfaces/performanceGoals.model';
 import { Link } from 'react-router-dom';
+import Modal from '../Modal/Modal';
 
 type listProp = {
     performance: Performance;
@@ -15,8 +16,8 @@ const PerfList: React.FC <listProp> = (props) => {
         ...props.performance,
         dateDue: props.performance.dateDue.toString().substring(0, 10)
     });
-
-    const [hidePro, setHidePro] = useState<Boolean>(false);
+    const [show, setShow] = useState<boolean>(false);
+    const [hidePro, setHidePro] = useState<boolean>(false);
 
     let date : Date = new Date(props.performance.dateDue);
 
@@ -76,6 +77,7 @@ const PerfList: React.FC <listProp> = (props) => {
                             onChange={handleChange}
                         />
                     <br></br>
+                    <br></br>
                     <label htmlFor="dueDate">
                         Currently due on <time>{date.toLocaleDateString()}</time>
                     </label>
@@ -86,6 +88,7 @@ const PerfList: React.FC <listProp> = (props) => {
                         onChange={handleChange} 
                         required
                     />
+                    <br></br>
                     <br></br>
                     <label htmlFor="reward">
                         How will you reward yourself?
@@ -99,6 +102,7 @@ const PerfList: React.FC <listProp> = (props) => {
                         required
                     />
                     <br></br>
+                    <br></br>
                     <label htmlFor="punishment">
                         How will you hold yourself accountable?
                     </label>
@@ -109,6 +113,7 @@ const PerfList: React.FC <listProp> = (props) => {
                         onChange={handleChange}
                         required
                     />
+                    <br></br>
                     <br></br>
                     <label htmlFor="percentImproved">
                         What percentage will you improve by?
@@ -121,11 +126,13 @@ const PerfList: React.FC <listProp> = (props) => {
                         required
                     />
                     <br></br>
+                    <br></br>
                     <Link to={`/processes/newProcess/${props.oId}/${props.performance._id}`}>
                         <button>
                             Add Process Goal
                         </button>
                     </Link>
+                    <br></br>
                     <br></br>
                     <button 
                         type="button"
@@ -138,14 +145,27 @@ const PerfList: React.FC <listProp> = (props) => {
                     <button 
                         type='button'
                         className="warning"
-                        onClick={handleDelete}
+                        onClick={()=> setShow(!show)}
                     >
                         Delete
                     </button>
-                    {props.performance.processGoals.length > 0 ? <button onClick={showProcess}>{hidePro ? 'Hide Process Goals': 'Show Process Goals'}</button> : <></>}
+                {props.performance.processGoals.length > 0 && (
+                    <Link to={`/performances/${form._id}`}>
+                        Show Process Goals
+                    </Link>
+                )}
                 </fieldset>
                 {!form._id && <p>Loading...</p>}
                 {props.error && <p className='error'>{props.error}</p>}
+                {show && (
+                    <Modal 
+                        title={`Delete ${form.description}?`} 
+                        onClose={()=> setShow(!show)} 
+                        onProceed={handleDelete} 
+                        isOpened={show}
+                        children={<h1>hello</h1>}
+                    />
+                )}
             </form>
         </>
     )

@@ -1,13 +1,17 @@
-.authForm input:not([type=checkbox]) {
+.form {
+    max-width: 800px;
+}
+
+.form input:not([type=checkbox]) {
     max-width: 500px;
     width: 60%;
 }
 
-.authForm .email {
+.form .email {
     margin-left:45px;
 }
 
-.authForm .password {
+.form .password {
     margin-left : 15px;
 }
 
@@ -28,17 +32,23 @@ input:focus {
     border-color: orange;
 }
 
-.authForm label {
+.form label {
     margin-left: 10px;
 }
 
-.authForm button {
+.form button {
     margin-top: 10px;
 }
 
- input[type=checkbox] {
+input[type=checkbox] {
     width: 1em;
     height: 1em;
     position: relative;
     top: 5px;
+}
+
+.form select {
+    padding: 5px;
+    outline-offset: 5px;
+    margin-right: 0px;
 }
