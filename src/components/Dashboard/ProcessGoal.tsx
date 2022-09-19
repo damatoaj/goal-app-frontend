@@ -5,10 +5,7 @@ import {Outcome} from '../../interfaces/outcomeGoals.model';
 
 type pgProps = {
     process: Process;
-    setOutcomes:(arg:Outcome[]) => void;
-    setActive:(arg:Outcome) => void;
-    active: Outcome;
-    hidePro:Boolean;
+
 }
 
 const ProcessGoal: React.FC <pgProps> = (props) => {
@@ -18,10 +15,8 @@ const ProcessGoal: React.FC <pgProps> = (props) => {
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const [form, setForm] = useState<object>({
-        duration : 0,
-        frequency: 0,
-        repeats: false
+    const [form, setForm] = useState<any>({
+        ...props.process
     });
 
     // const fieldset = useRef<HTMLFieldSetElement>(null);
@@ -86,9 +81,9 @@ const ProcessGoal: React.FC <pgProps> = (props) => {
                     Duration
                 </label>
                 <input 
-                    type="number" 
+                    type="text" 
                     name="duration" 
-                    value={duration} 
+                    value={form.duration.number} 
                     onChange={(e)=>setDuration(e.target.valueAsNumber)}
                     required
                 />
@@ -99,7 +94,7 @@ const ProcessGoal: React.FC <pgProps> = (props) => {
                 <input 
                     type="number" 
                     name="frequency"
-                    value={frequency} 
+                    value={form.frequency.number} 
                     onChange={(e)=>setFrequency(e.target.valueAsNumber)}
                     required
                 />
@@ -110,31 +105,19 @@ const ProcessGoal: React.FC <pgProps> = (props) => {
                 <input 
                     type="checkbox" 
                     name="repeats" 
-                    checked={repeats} 
+                    checked={form.repeats} 
                     onChange={(e)=>setRepeats(e.target.checked)}
                 />
                 <br></br>
                 <button 
                     className='update'
-                    onClick={(e:FormEvent)=> handleUpdate(
-                        e,
-                        props.process._id, 
-                        props.active._id, 
-                        props.setActive, 
-                        props.setOutcomes
-                    )}
+                    type='button'
                 >
                     Update
                 </button>
                 <button
                     className="warning"
-                    onClick={(e:FormEvent)=> handleDelete(
-                        e, 
-                        props.process._id, 
-                        props.active._id, 
-                        props.setActive, 
-                        props.setOutcomes
-                        )}
+                    type='button'
                 >
                     X
                 </button>

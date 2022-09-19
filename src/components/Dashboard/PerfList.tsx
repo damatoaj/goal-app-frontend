@@ -17,14 +17,8 @@ const PerfList: React.FC <listProp> = (props) => {
         dateDue: props.performance.dateDue.toString().substring(0, 10)
     });
     const [show, setShow] = useState<boolean>(false);
-    const [hidePro, setHidePro] = useState<boolean>(false);
 
     let date : Date = new Date(props.performance.dateDue);
-
-    const showProcess = (e:MouseEvent) => {
-        e.preventDefault();
-        setHidePro(!hidePro);
-    }
 
     const handleDelete = async () => {
         await props.delete(form._id)
@@ -150,7 +144,7 @@ const PerfList: React.FC <listProp> = (props) => {
                         Delete
                     </button>
                 {props.performance.processGoals.length > 0 && (
-                    <Link to={`/performances/${form._id}`}>
+                    <Link to={`/performances/${form._id}/${props.oId}`}>
                         Show Process Goals
                     </Link>
                 )}

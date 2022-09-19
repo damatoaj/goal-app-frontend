@@ -8,6 +8,7 @@ import OutcomeScreen from './components/Screens/Outcome/OutcomeScreen';
 import { useAuthContext } from './hooks/useAuthContext';
 import NewPerformanceScreen from './components/Screens/NewPerformance/NewPerformanceScreen';
 import NewProcessScreen from './components/Screens/NewProcessScreen/NewProcessScreen';
+import PerformanceDetails from './components/Screens/PerformanceDetails/PerformanceDetails';
 
 const App = () => {
   const { user } = useAuthContext();
@@ -30,7 +31,7 @@ const App = () => {
           <Route path='/performances'>
             <Route index element={<h1>performance list</h1>} />
             <Route path='newPerformance/:id' element={<NewPerformanceScreen />} />
-            <Route path=':id' element={<h1>id</h1>} />
+            <Route path=':id/:oid' element={<PerformanceDetails />} />
           </Route>
           <Route path='/processes' >
             <Route index element={<h1>process list</h1>} />
